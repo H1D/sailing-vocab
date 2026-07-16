@@ -1,10 +1,31 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import type { LeitnerState, Term, VocabData } from './types/index'
+import { useNightMode } from './hooks/useNightMode'
+import Browse from './views/Browse'
+import Train from './views/Train'
+import Drill from './views/Drill'
+import CheatSheet from './views/CheatSheet'
+import vocabData from './data/vocab.json'
 
 const VIEWS = ['#search', '#flashcards', '#quiz', '#cheatsheet'] as const
-type View = typeof VIEWS[number]
+type View = (typeof VIEWS)[number]
+
+const NAV_TABS = [
+  { hash: '#search' as View, icon: '🔍', label: 'Search' },
+  { hash: '#flashcards' as View, icon: '🃏', label: 'Cards' },
+  { hash: '#quiz' as View, icon: '🎯', label: 'Drill' },
+  { hash: '#cheatsheet' as View, icon: '📋', label: 'Sheet' },
+]
+
+const data = vocabData as unknown as VocabData
+const allTerms: Term[] = data.terms ?? []
 
 export default function App() {
-  const [view, setView] = useState<View>('#search')
+  // Navigation
+  const [view, setView] = useState<View>(() => {
+    const h = window.location.hash as View
+    return VIEWS.includes(h) ? h : '#search'
+  })
 
   useEffect(() => {
     const onHash = () => {
@@ -15,28 +36,129 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
 
+  // Night mode
+  const { nightMode, toggle: toggleNightMode } = useNightMode()
+
+  // Online/offline
+  const [online, setOnline] = useState(navigator.onLine)
+  useEffect(() => {
+    const up = () => setOnline(true)
+    const down = () => setOnline(false)
+    window.addEventListener('online', up)
+    window.addEventListener('offline', down)
+    return () => {
+      window.removeEventListener('online', up)
+      window.removeEventListener('offline', down)
+    }
+  }, [])
+
+  // SW update banner
+  const [showUpdateBanner, setShowUpdateBanner] = useState(false)
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.ready.then(reg => {
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing
+          if (!newWorker) return
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              setShowUpdateBanner(true)
+            }
+          })
+        })
+      }).catch(() => {
+        // SW not available in dev mode — ignore
+      })
+    }
+  }, [])
+
+  // Leitner state — stored in localStorage, managed by Train via useLeitner hook
+  // We store a copy here so Browse can read progress dots
+  const [leitnerState, setLeitnerState] = useState<LeitnerState>(() => {
+    try {
+      const raw = localStorage.getItem('leitner-state')
+      return raw ? JSON.parse(raw) : {}
+    } catch {
+      return {}
+    }
+  })
+
+  const handleLeitnerUpdate = useCallback((state: LeitnerState) => {
+    setLeitnerState(state)
+  }, [])
+
   return (
-    <div className="min-h-screen bg-slate-900 text-white flex flex-col">
-      <main className="flex-1 p-4">
-        <h1 className="text-2xl font-bold text-sky-400">Sailing Vocab</h1>
-        <p className="text-slate-400 mt-2">Current view: {view}</p>
-        <p className="text-slate-500 mt-4">App shell loaded ✓ — views coming soon</p>
+    <div className="min-h-screen bg-slate-900 dark:bg-black text-white dark:text-red-300 flex flex-col max-w-2xl mx-auto relative">
+      {/* SW update banner */}
+      {showUpdateBanner && (
+        <div
+          className="fixed top-0 left-0 right-0 z-50 bg-sky-600 dark:bg-red-800 text-white text-center py-3 px-4 text-sm font-medium cursor-pointer shadow-lg max-w-2xl mx-auto"
+          onClick={() => window.location.reload()}
+        >
+          New version available — tap to reload
+          <button
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white text-lg"
+            onClick={e => { e.stopPropagation(); setShowUpdateBanner(false) }}
+            aria-label="Dismiss"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
+      {/* Header */}
+      <header className="flex items-center justify-between px-4 py-3 bg-slate-900 dark:bg-black border-b border-slate-700 dark:border-slate-900 flex-shrink-0">
+        <div className="flex items-center gap-2">
+          <h1 className="text-lg font-bold text-white dark:text-red-300">⚓ Sail Vocab</h1>
+          {/* Offline indicator */}
+          <span
+            className={`w-2 h-2 rounded-full ${online ? 'bg-green-500' : 'bg-red-500'}`}
+            title={online ? 'Online' : 'Offline'}
+          />
+        </div>
+        <button
+          onClick={toggleNightMode}
+          className="text-xl p-2 rounded-lg hover:bg-slate-700 dark:hover:bg-slate-900 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+          aria-label={nightMode ? 'Switch to day mode' : 'Switch to night mode'}
+        >
+          {nightMode ? '☀️' : '🌙'}
+        </button>
+      </header>
+
+      {/* Main content */}
+      <main className="flex-1 overflow-hidden flex flex-col">
+        {view === '#search' && (
+          <Browse terms={allTerms} leitnerState={leitnerState} />
+        )}
+        {view === '#flashcards' && (
+          <Train
+            terms={allTerms}
+            leitnerState={leitnerState}
+            onUpdate={handleLeitnerUpdate}
+          />
+        )}
+        {view === '#quiz' && (
+          <Drill terms={allTerms} />
+        )}
+        {view === '#cheatsheet' && (
+          <CheatSheet terms={allTerms} />
+        )}
       </main>
-      <nav className="bg-slate-800 border-t border-slate-700 flex">
-        {[
-          { hash: '#search', label: 'Search' },
-          { hash: '#flashcards', label: 'Cards' },
-          { hash: '#quiz', label: 'Quiz' },
-          { hash: '#cheatsheet', label: 'Sheet' },
-        ].map(({ hash, label }) => (
+
+      {/* Bottom nav */}
+      <nav className="bg-slate-800 dark:bg-slate-950 border-t border-slate-700 dark:border-slate-800 flex pb-[env(safe-area-inset-bottom)] flex-shrink-0">
+        {NAV_TABS.map(({ hash, icon, label }) => (
           <a
             key={hash}
             href={hash}
-            className={`flex-1 text-center py-3 text-sm font-medium transition-colors ${
-              view === hash ? 'text-sky-400 bg-slate-700' : 'text-slate-400 hover:text-white'
+            className={`flex-1 flex flex-col items-center justify-center py-2 min-h-[56px] text-xs font-medium transition-colors gap-0.5 ${
+              view === hash
+                ? 'text-sky-400 dark:text-red-400 bg-slate-700 dark:bg-slate-900'
+                : 'text-slate-400 hover:text-white dark:hover:text-red-300'
             }`}
           >
-            {label}
+            <span className="text-lg leading-none">{icon}</span>
+            <span>{label}</span>
           </a>
         ))}
       </nav>
