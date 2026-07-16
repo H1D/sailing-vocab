@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media print {
+  nav, .no-print { display: none !important; }
+  .cheat-sheet-content { column-count: 2; font-size: 11pt; }
+  body { color: black; background: white; }
+}
+
+@media screen and (max-width: 768px) {
+  .print-button { display: none; }
+}
