@@ -94,6 +94,15 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
     setAnswered(null)
   }
 
+  // Auto-advance shortly after an answer so no "Next" tap is needed.
+  // The brief delay lets the ✓/✗ feedback flash register.
+  useEffect(() => {
+    if (!answered) return
+    const t = setTimeout(advance, 700)
+    return () => clearTimeout(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [answered])
+
   function handleGotIt() {
     if (!currentTerm || answered) return
     setAnswered('got-it')
