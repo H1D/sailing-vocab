@@ -88,3 +88,9 @@ offline check is manual. Steps:
 6. Install to the home screen (Add to Home Screen) and repeat step 3–5 launched
    from the icon, fully offline, to confirm the standalone PWA works with no
    network.
+
+## Auto-merge
+
+PRs squash-merge themselves automatically once their **CI** run passes
+(`.github/workflows/automerge.yml`). To hold a PR open, mark it a **draft** or
+add the **`no-automerge`** label.
