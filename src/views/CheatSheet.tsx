@@ -93,11 +93,6 @@ export default function CheatSheet({ terms, sequences = [] }: Props) {
                         <span className="text-slate-500 dark:text-slate-600 flex-shrink-0">→</span>
                         <span className="text-slate-300 dark:text-red-200 min-w-0">
                           {term.definition}
-                          {term.pron && (
-                            <span className="font-mono text-amber-300 dark:text-red-400 ml-1 text-xs whitespace-nowrap">
-                              {term.pron}
-                            </span>
-                          )}
                           <span className="text-slate-500 dark:text-slate-600 ml-1 text-xs">
                             ({term.ru})
                           </span>
@@ -167,11 +162,6 @@ function SequenceCard({ sequence }: { sequence: ManoeuvreSequence }) {
                 >
                   {stepLabel(step.by)}
                 </span>
-                {step.pron && (
-                  <span className="font-mono text-xs text-amber-300 dark:text-red-400 tracking-wide">
-                    {step.pron}
-                  </span>
-                )}
               </div>
               {step.ru && (
                 <div className="text-slate-400 dark:text-slate-500 text-sm">{step.ru}</div>

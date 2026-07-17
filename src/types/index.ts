@@ -32,7 +32,6 @@ export interface Term {
   aka?: string[]       // alternative names
   role?: CommandRole   // only for 'commands' category
   trainable?: boolean  // false = reference only (Browse), excluded from Train rotation. Default true.
-  pron?: string        // optional pronunciation hint tuned to a Russian speaker's traps (e.g. gunwale "GUN-nel")
   example?: string     // optional short real on-deck usage line (e.g. "Ease the mainsheet!")
 }
 
@@ -43,7 +42,6 @@ export interface SequenceStep {
   call: string          // the English line actually spoken on deck
   ru: string            // Russian meaning
   by: CommandRole       // who says it: helm / crew / both
-  pron?: string         // Russian-friendly respelling of the call
 }
 
 export interface ManoeuvreSequence {

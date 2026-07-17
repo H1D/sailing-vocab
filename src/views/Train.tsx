@@ -103,6 +103,15 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
     leitner.markStillLearning(currentTerm.id)
   }
 
+  // Auto-advance shortly after an answer so no "Next" tap is needed.
+  // The brief delay lets the ✓/✗ feedback flash register.
+  useEffect(() => {
+    if (!answered) return
+    const t = setTimeout(advance, 700)
+    return () => clearTimeout(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [answered])
+
   // Touch swipe handlers
   function onTouchStart(e: React.TouchEvent) {
     touchStartX.current = e.touches[0].clientX
@@ -212,8 +221,7 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
         >
-          {/* TTS button — only useful when an English voice actually loaded.
-              The pron respelling on the back is the reliable teacher regardless. */}
+          {/* TTS button — best-effort; only shows when an English voice loaded. */}
           {hasEnglishVoice && (
             <button
               className="absolute top-2 right-2 text-2xl text-slate-400 hover:text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
@@ -248,25 +256,6 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
               {currentTerm.category === 'commands' && (
                 <div className="text-2xl font-bold text-sky-300 dark:text-red-300">
                   "{currentTerm.term}"
-                </div>
-              )}
-
-              {/* Pronunciation respelling — the reliable teacher. Always shown
-                  when present, independent of any TTS voice availability. */}
-              {currentTerm.pron && (
-                <div className="flex items-center justify-center gap-2 flex-wrap">
-                  <span className="font-mono font-bold text-lg text-amber-300 dark:text-red-300 tracking-wide">
-                    {currentTerm.pron}
-                  </span>
-                  {hasEnglishVoice && (
-                    <button
-                      className="text-xl text-slate-400 hover:text-white p-1 min-h-[44px] min-w-[44px] flex items-center justify-center"
-                      onClick={e => { e.stopPropagation(); speak(currentTerm.example || currentTerm.term) }}
-                      aria-label="Speak pronunciation"
-                    >
-                      🔊
-                    </button>
-                  )}
                 </div>
               )}
 

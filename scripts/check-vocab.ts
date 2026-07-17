@@ -55,11 +55,7 @@ terms.forEach((t, i) => {
   if (!catSet.has(cat)) err(`${where}: category "${cat}" not in CATEGORIES`)
   else usedCats.add(cat)
 
-  // Definition of done #1 — pron on EVERY term.
-  if (typeof t.pron !== 'string' || !t.pron.trim())
-    err(`${where}: missing "pron" (required on every term)`)
-
-  // Definition of done #2 — example on every command.
+  // Example on every command.
   if (cat === 'commands' && (typeof t.example !== 'string' || !t.example.trim()))
     err(`${where}: command is missing "example"`)
 

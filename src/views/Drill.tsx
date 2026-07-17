@@ -199,17 +199,9 @@ export default function Drill({ terms }: Props) {
         })}
       </div>
 
-      {/* Role badge + pronunciation + Next button after answer */}
+      {/* Role badge + Next button after answer */}
       {selected && (
         <div className="flex flex-col gap-3 mt-2">
-          {current.term.pron && (
-            <div className="flex items-center gap-2 text-sm text-slate-300 dark:text-slate-400">
-              <span>Say it:</span>
-              <span className="font-mono font-bold text-amber-300 dark:text-red-300 tracking-wide">
-                {current.term.pron}
-              </span>
-            </div>
-          )}
           {current.term.role && (
             <div className="flex items-center gap-2 text-sm text-slate-300 dark:text-slate-400">
               <span>Command role:</span>
