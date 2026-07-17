@@ -12,26 +12,25 @@ British terms are primary and US variants are `aka`.
 
 ## Views
 
-- **Search** — browse/search all terms by category; each shows its pronunciation
-  respelling (`pron`) and, when expanded, a real on-deck `example`.
+- **Search** — browse/search all terms by category; each shows its Russian
+  meaning and, when expanded, a real on-deck `example`.
 - **Cards** — Leitner spaced-repetition flashcards. The card back shows the
-  pronunciation respelling (the reliable teacher), the definition, the Russian
-  meaning, and an example line. A 🔊 button appears only when a usable English
-  voice is available offline.
-- **Drill** — multiple-choice quiz over the command terms; reveals the
-  pronunciation with the answer.
+  definition, the Russian meaning, and an example line. A 🔊 button appears only
+  when a usable English voice is available offline.
+- **Drill** — multiple-choice quiz over the command terms; reveals the correct
+  answer and its meaning.
 - **Sheet** — printable cheat sheet: manoeuvre **call → response** sequences
   (tack, gybe, MOB, leaving berth, anchoring, mooring buoy, reefing) plus a flat
   command/winch/mooring reference.
 
-## Pronunciation vs. TTS
+## Text-to-speech
 
-The `pron` respelling (Russian-friendly, stressed syllable capitalised) is the
-**primary teacher** and always renders. Text-to-speech is a **best-effort
-enhancement only** — iOS/Android frequently ship with no offline en-GB (or any
-English) voice. The app detects whether an English voice actually loaded and
-only then shows the 🔊 button and autoplays on reveal. It never blocks a reveal
-and never throws if speech is unavailable.
+Text-to-speech is a **best-effort enhancement only** — iOS/Android frequently
+ship with no offline en-GB (or any English) voice. The app detects whether an
+English voice actually loaded and only then shows the 🔊 button and autoplays on
+reveal. It never blocks a reveal and never throws if speech is unavailable, so
+the written English term, definition, Russian meaning, and example always stand
+on their own.
 
 ## Development
 
@@ -77,12 +76,12 @@ offline check is manual. Steps:
    network off entirely).
 4. **Reload the page.** It must load fully from cache.
 5. Verify all four views work offline:
-   - **Search**: type a query, results appear; expand a term — `pron` and
-     `example` render.
-   - **Cards**: tap **Reveal** — the pronunciation, definition, Russian, and any
-     example render. (🔊 may be absent if no English voice — that is expected.)
-   - **Drill**: answer a question; the correct answer highlights and the
-     pronunciation shows.
+   - **Search**: type a query, results appear; expand a term — the Russian
+     meaning and `example` render.
+   - **Cards**: tap **Reveal** — the definition, Russian, and any example render.
+     (🔊 may be absent if no English voice — that is expected.)
+   - **Drill**: answer a question; the correct answer highlights and its meaning
+     shows.
    - **Sheet**: the manoeuvre call→response sequences and the command reference
      render.
 6. Install to the home screen (Add to Home Screen) and repeat step 3–5 launched
