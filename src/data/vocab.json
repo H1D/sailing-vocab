@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": 1,
-    "total_terms": 177
+    "total_terms": 241
   },
   "terms": [
     {
@@ -29,7 +29,7 @@
       "id": "port",
       "term": "port",
       "ru": "левый борт",
-      "definition": "The left side of the boat when facing forward.",
+      "definition": "The left side of the boat when facing forward. Also means a harbour — context decides which.",
       "category": "parts",
       "aka": [
         "port side"
@@ -84,8 +84,19 @@
       "id": "keel",
       "term": "keel",
       "ru": "киль",
-      "definition": "The weighted fin extending below the hull that provides stability and prevents sideways drift.",
+      "definition": "The weighted fin extending below the hull that provides stability and prevents sideways drift. On the Django it is a lifting keel that raises for shallow water.",
       "category": "parts"
+    },
+    {
+      "id": "lifting-keel",
+      "term": "lifting keel",
+      "ru": "подъёмный (шверт-)киль",
+      "definition": "A keel that can be raised and lowered, letting the Django reduce draught from 2.40 m to 1.10 m for shallow anchorages and drying berths.",
+      "category": "parts",
+      "aka": [
+        "swing keel",
+        "centreboard keel"
+      ]
     },
     {
       "id": "cleat",
@@ -109,11 +120,15 @@
       "category": "parts"
     },
     {
-      "id": "lifeline",
-      "term": "lifeline",
-      "ru": "леер",
-      "definition": "Wire or rope running along the deck edge between stanchions to prevent crew falling overboard.",
-      "category": "parts"
+      "id": "guardrail",
+      "term": "guardrail",
+      "ru": "леер (ограждение по борту)",
+      "definition": "Wire or rope running along the deck edge between stanchions to stop crew falling overboard; the whole run is the guardrail, the individual wire a lifeline.",
+      "category": "parts",
+      "aka": [
+        "lifeline",
+        "guard wire"
+      ]
     },
     {
       "id": "lazarette",
@@ -182,53 +197,41 @@
       "category": "parts"
     },
     {
-      "id": "heads",
-      "term": "heads",
-      "ru": "гальюн / туалет",
-      "definition": "The toilet on a boat; also the small compartment containing it.",
+      "id": "bowsprit",
+      "term": "bowsprit",
+      "ru": "бушприт",
+      "definition": "A spar projecting forward from the bow; on the Django it carries the tack of the asymmetric spinnaker.",
+      "category": "parts"
+    },
+    {
+      "id": "sprayhood",
+      "term": "sprayhood",
+      "ru": "брызгозащитный капот",
+      "definition": "A folding canvas-and-frame cover over the companionway that shields the cockpit from spray and rain.",
       "category": "parts",
       "aka": [
-        "toilet",
-        "head"
+        "dodger"
       ]
     },
     {
-      "id": "engine",
-      "term": "engine",
-      "ru": "двигатель / мотор",
-      "definition": "The auxiliary inboard motor used when there is no wind or for maneuvering in harbour.",
-      "category": "parts"
-    },
-    {
-      "id": "throttle",
-      "term": "throttle",
-      "ru": "ручка газа / дроссель",
-      "definition": "The lever controlling engine speed and gear (forward/neutral/reverse).",
-      "category": "parts"
-    },
-    {
-      "id": "engine-alarm",
-      "term": "engine alarm",
-      "ru": "сигнал тревоги двигателя",
-      "definition": "An audible or visual warning indicating an engine fault such as overheating or low oil pressure.",
+      "id": "tiller-extension",
+      "term": "tiller extension",
+      "ru": "удлинитель румпеля",
+      "definition": "A hinged arm on the tiller that lets the helm steer from the side deck while sitting out.",
       "category": "parts",
-      "trainable": false
+      "aka": [
+        "hiking stick"
+      ]
     },
     {
-      "id": "impeller",
-      "term": "impeller",
-      "ru": "крыльчатка помпы охлаждения",
-      "definition": "The rubber pump rotor that circulates raw water to cool the engine; must be replaced regularly.",
+      "id": "boathook",
+      "term": "boat hook",
+      "ru": "отпорный крюк / багор",
+      "definition": "A pole with a hooked end used to fend off, reach a mooring line, or pick up a buoy.",
       "category": "parts",
-      "trainable": false
-    },
-    {
-      "id": "clew-ring",
-      "term": "clew ring",
-      "ru": "кренгельс шкотового угла",
-      "definition": "The metal ring at the clew of a sail through which the sheet is attached.",
-      "category": "parts",
-      "trainable": false
+      "aka": [
+        "boathook"
+      ]
     },
     {
       "id": "mainsail",
@@ -259,6 +262,29 @@
       "category": "sails"
     },
     {
+      "id": "asymmetric",
+      "term": "asymmetric spinnaker",
+      "ru": "асимметричный спинакер / геннакер",
+      "definition": "A cruising downwind sail tacked to the bowsprit, flown like a big genoa for reaching; the Django's is a gennaker.",
+      "category": "sails",
+      "aka": [
+        "gennaker",
+        "asym",
+        "kite"
+      ]
+    },
+    {
+      "id": "snuffer",
+      "term": "snuffer",
+      "ru": "чулок для спинакера",
+      "definition": "A fabric sleeve pulled down over the asymmetric to douse and hoist it under control.",
+      "category": "sails",
+      "aka": [
+        "sock",
+        "douser"
+      ]
+    },
+    {
       "id": "reef",
       "term": "reef",
       "ru": "риф",
@@ -283,7 +309,7 @@
       "id": "tack-corner",
       "term": "tack",
       "ru": "галсовый угол",
-      "definition": "The lower forward corner of a sail, attached to the boom or tack fitting at the mast.",
+      "definition": "The lower forward corner of a sail, attached to the boom or tack fitting at the mast. Note: 'tack' also means the turn through the wind and the line on a spinnaker — context decides.",
       "category": "sails",
       "aka": [
         "tack corner"
@@ -292,8 +318,8 @@
     {
       "id": "head-of-sail",
       "term": "head",
-      "ru": "верхний угол паруса / фал",
-      "definition": "The topmost corner of a triangular sail, where the halyard attaches.",
+      "ru": "верхний угол паруса",
+      "definition": "The topmost corner of a triangular sail, where the halyard attaches. Not to be confused with 'the heads' (the toilet).",
       "category": "sails",
       "aka": [
         "head of sail"
@@ -302,8 +328,8 @@
     {
       "id": "luff",
       "term": "luff",
-      "ru": "передняя шкаторина / лата",
-      "definition": "The forward edge of a sail, running from tack to head.",
+      "ru": "передняя шкаторина",
+      "definition": "The forward edge of a sail, running from tack to head; also to let a sail flap by heading too close to the wind.",
       "category": "sails",
       "aka": [
         "luff edge"
@@ -336,9 +362,17 @@
     {
       "id": "headsail",
       "term": "headsail",
-      "ru": "кливер / стаксель (передний парус)",
+      "ru": "передний парус (стаксель/генуя)",
       "definition": "Any sail set forward of the mast on the forestay; includes jib, genoa, and spinnaker.",
       "category": "sails"
+    },
+    {
+      "id": "clew-ring",
+      "term": "clew ring",
+      "ru": "кренгельс шкотового угла",
+      "definition": "The metal ring at the clew of a sail through which the sheet is attached.",
+      "category": "sails",
+      "trainable": false
     },
     {
       "id": "mast",
@@ -352,6 +386,13 @@
       "term": "boom",
       "ru": "гик",
       "definition": "The horizontal spar attached to the mast at its base that holds the foot of the mainsail.",
+      "category": "rigging"
+    },
+    {
+      "id": "gooseneck",
+      "term": "gooseneck",
+      "ru": "вертлюг гика (соединение гика с мачтой)",
+      "definition": "The hinged fitting connecting the boom to the mast, allowing it to swing and pivot.",
       "category": "rigging"
     },
     {
@@ -386,7 +427,7 @@
       "id": "sheet",
       "term": "sheet",
       "ru": "шкот",
-      "definition": "A line used to control the angle and trim of a sail.",
+      "definition": "A line used to control the angle and trim of a sail. Pronounce it with a long 'ee' (not a short 'i').",
       "category": "rigging"
     },
     {
@@ -399,7 +440,7 @@
     {
       "id": "kicker",
       "term": "kicker",
-      "ru": "гик-шкот / ванг",
+      "ru": "гика-оттяжка / ванг",
       "definition": "A tackle or strut that pulls the boom down to control sail shape and prevent the boom from rising.",
       "category": "rigging",
       "aka": [
@@ -435,28 +476,28 @@
     {
       "id": "reefing-line",
       "term": "reefing line",
-      "ru": "риф-шнур / риф-штерт",
+      "ru": "риф-шкентель / риф-штерт",
       "definition": "A line used to pull down the reef clew and tie in a reef, reducing sail area.",
       "category": "rigging"
     },
     {
       "id": "traveller",
       "term": "traveller",
-      "ru": "каретка гика-шкота / травеллер",
-      "definition": "A track and sliding car that allows the mainsheet attachment point to move athwartships, controlling boom position.",
+      "ru": "погон грота-шкота / травеллер",
+      "definition": "A track and sliding car that lets the mainsheet attachment point move athwartships, controlling boom position.",
       "category": "rigging"
     },
     {
       "id": "cunningham",
       "term": "cunningham",
-      "ru": "кننингхэм (оттяжка передней шкаторины)",
+      "ru": "кэннингем (оттяжка передней шкаторины)",
       "definition": "A control line that pulls the luff of the mainsail down to tension it and move the draft forward.",
       "category": "rigging"
     },
     {
       "id": "outhaul",
       "term": "outhaul",
-      "ru": "ликтрос / оттяжка нижней шкаторины",
+      "ru": "оттяжка нижней шкаторины / шкентель",
       "definition": "A line that pulls the clew of the mainsail along the boom to tension the foot of the sail.",
       "category": "rigging"
     },
@@ -470,8 +511,15 @@
     {
       "id": "jib-sheet",
       "term": "jib sheet",
-      "ru": "стакселя-шкот / шкот генуи",
+      "ru": "стаксель-шкот / шкот генуи",
       "definition": "The sheet controlling the headsail, typically led back to winches in the cockpit.",
+      "category": "rigging"
+    },
+    {
+      "id": "tack-line",
+      "term": "tack line",
+      "ru": "галс-оттяжка (спинакера)",
+      "definition": "The line holding the tack of the asymmetric spinnaker down to the end of the bowsprit; ease it to lift the sail for a gybe.",
       "category": "rigging"
     },
     {
@@ -488,7 +536,7 @@
     {
       "id": "close-reach",
       "term": "close reach",
-      "ru": "острый бакштаг / галфвинд с наклоном к бейдевинду",
+      "ru": "курс чуть полнее бейдевинда (ветер впереди траверза)",
       "definition": "Sailing with the wind forward of the beam but not as close-hauled as possible, roughly 50–70° off the wind.",
       "category": "points-of-sail"
     },
@@ -520,7 +568,7 @@
     {
       "id": "in-irons",
       "term": "in irons",
-      "ru": "в штиль / зависнуть носом к ветру",
+      "ru": "зависнуть носом к ветру, потерять ход",
       "definition": "Stuck head-to-wind with no steerage, unable to fall off onto either tack.",
       "category": "points-of-sail",
       "aka": [
@@ -534,8 +582,7 @@
       "definition": "The arc of wind angles (roughly 45° either side of dead upwind) where a boat cannot sail.",
       "category": "points-of-sail",
       "aka": [
-        "dead zone",
-        "the eye of the wind"
+        "dead zone"
       ]
     },
     {
@@ -579,48 +626,41 @@
     {
       "id": "cmd-ready-about",
       "term": "Ready about?",
-      "ru": "Готовы к повороту?",
-      "definition": "Helm asks crew if everyone is ready to tack (change direction through the wind).",
+      "ru": "Готовы к повороту оверштаг?",
+      "definition": "Helm asks the crew if everyone is ready to tack (turn the bow through the wind).",
       "category": "commands",
-      "role": "helm"
+      "role": "helm",
+      "example": "Ready about? — Ready!"
     },
     {
       "id": "cmd-ready",
       "term": "Ready!",
       "ru": "Готов! / Готова!",
-      "definition": "Crew confirms they are prepared for the upcoming maneuver.",
+      "definition": "Crew confirms they are prepared for the upcoming manoeuvre.",
       "category": "commands",
-      "role": "crew"
+      "role": "crew",
+      "example": "Ready!"
     },
     {
-      "id": "cmd-helms-alee",
-      "term": "Helms alee!",
-      "ru": "Руль под ветер!",
-      "definition": "Helm announces the tiller has been pushed to leeward and the tack is beginning — crew release and sheet in accordingly.",
+      "id": "cmd-lee-oh",
+      "term": "Lee-oh!",
+      "ru": "Кладу руль под ветер! (начинаю поворот оверштаг)",
+      "definition": "Helm's execution call for a tack — the tiller goes to leeward and the bow swings through the wind; crew let the working jib sheet fly and take up the new one.",
       "category": "commands",
       "role": "helm",
       "aka": [
-        "Lee-oh!"
-      ]
-    },
-    {
-      "id": "cmd-tacking",
-      "term": "Tacking!",
-      "ru": "Поворот оверштаг!",
-      "definition": "Called as the boat turns through the wind during a tack maneuver.",
-      "category": "commands",
-      "role": "helm",
-      "aka": [
-        "Coming about!"
-      ]
+        "Helms alee!"
+      ],
+      "example": "Lee-oh!"
     },
     {
       "id": "cmd-stand-by-to-gybe",
       "term": "Stand by to gybe!",
       "ru": "Приготовиться к повороту фордевинд!",
-      "definition": "Helm warns crew to prepare for a gybe — centre the boom and move to safe positions.",
+      "definition": "Helm warns the crew to prepare for a gybe — centre the mainsheet and move to safe positions.",
       "category": "commands",
-      "role": "helm"
+      "role": "helm",
+      "example": "Stand by to gybe!"
     },
     {
       "id": "cmd-ready-to-gybe",
@@ -628,26 +668,29 @@
       "ru": "Готовы к повороту фордевинд?",
       "definition": "Helm checks the crew is ready before executing a gybe.",
       "category": "commands",
-      "role": "helm"
+      "role": "helm",
+      "example": "Ready to gybe? — Ready!"
     },
     {
-      "id": "cmd-gybe-ho",
-      "term": "Gybe ho!",
-      "ru": "Поворот фордевинд!",
-      "definition": "Helm announces the gybe is underway — crew haul in the mainsheet and stand clear of the boom.",
+      "id": "cmd-gybe-oh",
+      "term": "Gybe-oh!",
+      "ru": "Поворот фордевинд! (гик пойдёт на другой борт)",
+      "definition": "Helm's execution call for a gybe — the stern passes through the wind and the boom sweeps across; crew control the mainsheet and stand clear.",
       "category": "commands",
       "role": "helm",
       "aka": [
         "Gybing!"
-      ]
+      ],
+      "example": "Gybe-oh!"
     },
     {
       "id": "cmd-watch-your-head",
       "term": "Watch your head!",
-      "ru": "Берегись! / Голову!",
+      "ru": "Берегись гика! / Голову!",
       "definition": "Warning shouted when the boom is about to sweep across, typically during a gybe.",
       "category": "commands",
-      "role": "both"
+      "role": "both",
+      "example": "Watch your head — boom coming across!"
     },
     {
       "id": "cmd-ease-the-sheet",
@@ -655,7 +698,8 @@
       "ru": "Потрави шкот!",
       "definition": "Instruction to let out a sheet to reduce sail trim or depower the sail.",
       "category": "commands",
-      "role": "helm"
+      "role": "helm",
+      "example": "Ease the jib sheet — she's over-trimmed!"
     },
     {
       "id": "cmd-sheet-in",
@@ -666,38 +710,109 @@
       "role": "helm",
       "aka": [
         "Trim in!"
-      ]
+      ],
+      "example": "Sheet in until the telltales fly!"
     },
     {
       "id": "cmd-bear-away",
       "term": "Bear away!",
-      "ru": "Уваливай!",
+      "ru": "Уваливай! (отверни от ветра)",
       "definition": "Turn the boat away from the wind, toward a broader point of sail.",
       "category": "commands",
       "role": "helm",
       "aka": [
         "Fall off!",
         "Bear off!"
-      ]
+      ],
+      "example": "Bear away onto a broad reach!"
     },
     {
-      "id": "cmd-head-up",
-      "term": "Head up!",
-      "ru": "Приводись!",
-      "definition": "Turn the boat toward the wind, onto a closer point of sail.",
+      "id": "cmd-harden-up",
+      "term": "Harden up!",
+      "ru": "Приводись! (ближе к ветру)",
+      "definition": "Turn the boat toward the wind, onto a closer point of sail, and trim on.",
       "category": "commands",
       "role": "helm",
       "aka": [
+        "Head up!",
         "Luff up!"
-      ]
+      ],
+      "example": "Harden up, we're too low for the mark!"
+    },
+    {
+      "id": "cmd-starboard",
+      "term": "Starboard!",
+      "ru": "Правый галс — уступи дорогу!",
+      "definition": "Right-of-way hail: you are on starboard tack and have priority — the other boat must keep clear. The single most-shouted safety word.",
+      "category": "commands",
+      "role": "both",
+      "example": "Starboard! Hold your course!"
+    },
+    {
+      "id": "cmd-water",
+      "term": "Water!",
+      "ru": "Дай воды у знака! (пропусти к марке)",
+      "definition": "A hail claiming room to pass a mark or obstruction; 'No water!' denies it.",
+      "category": "commands",
+      "role": "both",
+      "aka": [
+        "No water!"
+      ],
+      "example": "Water at the mark!"
+    },
+    {
+      "id": "cmd-helms-amidships",
+      "term": "Helm's amidships!",
+      "ru": "Руль прямо!",
+      "definition": "Instruction to centre the tiller/wheel so the boat runs straight.",
+      "category": "commands",
+      "role": "helm",
+      "example": "Helm's amidships — hold her steady!"
     },
     {
       "id": "cmd-cast-off",
       "term": "Cast off!",
-      "ru": "Отдай! / Отдавай концы!",
+      "ru": "Отдавай концы!",
       "definition": "Instruction to release a mooring line or dock line.",
       "category": "commands",
-      "role": "helm"
+      "role": "helm",
+      "example": "Cast off the bow line!"
+    },
+    {
+      "id": "cmd-fenders-down",
+      "term": "Fenders down!",
+      "ru": "Вывесить кранцы!",
+      "definition": "Instruction to hang the fenders over the side before coming alongside.",
+      "category": "commands",
+      "role": "helm",
+      "aka": [
+        "Rig the fenders!"
+      ],
+      "example": "Fenders down, port side!"
+    },
+    {
+      "id": "cmd-take-the-slack",
+      "term": "Take the slack!",
+      "ru": "Выбери слабину!",
+      "definition": "Instruction to pull in the loose part of a line and hold the boat in position.",
+      "category": "commands",
+      "role": "helm",
+      "aka": [
+        "Hold her there!"
+      ],
+      "example": "Take the slack on the aft spring!"
+    },
+    {
+      "id": "cmd-let-go-forward",
+      "term": "Let go forward!",
+      "ru": "Отдай носовой!",
+      "definition": "Instruction to release the bow (forward) mooring line.",
+      "category": "commands",
+      "role": "helm",
+      "aka": [
+        "Let go aft!"
+      ],
+      "example": "Let go forward — hold the aft spring!"
     },
     {
       "id": "cmd-all-fast",
@@ -705,7 +820,20 @@
       "ru": "Всё закреплено!",
       "definition": "Crew confirms all lines are secured and the boat is made fast.",
       "category": "commands",
-      "role": "crew"
+      "role": "crew",
+      "aka": [
+        "Made fast!"
+      ],
+      "example": "All fast fore and aft!"
+    },
+    {
+      "id": "cmd-ashore",
+      "term": "Ashore!",
+      "ru": "На берег! (сойди с концом на причал)",
+      "definition": "Instruction for a crew member to step onto the pontoon with a line.",
+      "category": "commands",
+      "role": "helm",
+      "example": "Step ashore with the bow line!"
     },
     {
       "id": "cmd-let-go",
@@ -713,50 +841,44 @@
       "ru": "Отдай!",
       "definition": "Instruction to release a line immediately.",
       "category": "commands",
-      "role": "helm"
-    },
-    {
-      "id": "cmd-man-overboard",
-      "term": "Man overboard!",
-      "ru": "Человек за бортом!",
-      "definition": "Emergency call when a person has fallen into the water — initiates MOB procedure.",
-      "category": "commands",
-      "role": "both",
-      "aka": [
-        "MOB!"
-      ]
+      "role": "helm",
+      "example": "Let go the halyard!"
     },
     {
       "id": "cmd-back-the-jib",
       "term": "Back the jib!",
-      "ru": "Задержи стаксель!",
-      "definition": "Hold the jib to the wrong side to push the bow around when stuck in irons.",
+      "ru": "Заложи стаксель на ветер!",
+      "definition": "Hold the jib to the windward side to push the bow around when stuck in irons or to heave to.",
       "category": "commands",
-      "role": "helm"
+      "role": "helm",
+      "example": "Back the jib to bring her head round!"
     },
     {
       "id": "cmd-in-irons",
       "term": "We're in irons!",
-      "ru": "Мы в мёртвом углу!",
+      "ru": "Мы зависли носом к ветру!",
       "definition": "Called when the boat is stuck head-to-wind with no steerage.",
       "category": "commands",
-      "role": "both"
+      "role": "both",
+      "example": "We're in irons — back the jib!"
     },
     {
       "id": "cmd-heave-to",
       "term": "Heave to!",
       "ru": "Лечь в дрейф!",
-      "definition": "Instruction to set up the hove-to position: sheet jib to windward and lash tiller to leeward so the boat makes slow, controlled drift.",
+      "definition": "Set up the hove-to position: back the jib to windward and lash the tiller to leeward so the boat makes slow, controlled drift.",
       "category": "commands",
-      "role": "helm"
+      "role": "helm",
+      "example": "Heave to so we can reef!"
     },
     {
       "id": "cmd-fend-off",
       "term": "Fend off!",
-      "ru": "Отпихивайся! / Отпихни!",
+      "ru": "Отпихни! / Отпихивайся!",
       "definition": "Instruction to push the boat away from a dock, boat, or obstacle using hands or a boathook.",
       "category": "commands",
-      "role": "helm"
+      "role": "helm",
+      "example": "Fend off the pontoon on the bow!"
     },
     {
       "id": "cmd-ease-the-main",
@@ -764,15 +886,17 @@
       "ru": "Потрави грот!",
       "definition": "Instruction to let out the mainsheet to reduce heel or depower the mainsail.",
       "category": "commands",
-      "role": "helm"
+      "role": "helm",
+      "example": "Ease the main in the gust!"
     },
     {
       "id": "cmd-hold-on",
       "term": "Hold on!",
       "ru": "Держись!",
-      "definition": "Warning to crew to grab a handhold before a wave or maneuver.",
+      "definition": "Warning to crew to grab a handhold before a wave or manoeuvre.",
       "category": "commands",
-      "role": "both"
+      "role": "both",
+      "example": "Hold on — big wave!"
     },
     {
       "id": "cmd-make-fast",
@@ -780,15 +904,117 @@
       "ru": "Закрепи!",
       "definition": "Instruction to secure a line to a cleat or bollard.",
       "category": "commands",
-      "role": "helm"
+      "role": "helm",
+      "example": "Make fast the stern line!"
     },
     {
       "id": "cmd-take-a-turn",
       "term": "Take a turn!",
-      "ru": "Обнеси! / Оберни!",
+      "ru": "Обнеси конец (вокруг утки/лебёдки)!",
       "definition": "Instruction to take a wrap around a cleat or winch to hold a line under load.",
       "category": "commands",
-      "role": "helm"
+      "role": "helm",
+      "example": "Take a turn on the winch before it loads up!"
+    },
+    {
+      "id": "cmd-furl-the-genoa",
+      "term": "Furl the genoa!",
+      "ru": "Закрути стаксель/геную!",
+      "definition": "Instruction to roll the headsail away on the furler, easing the sheet while hauling the furling line.",
+      "category": "commands",
+      "role": "helm",
+      "aka": [
+        "Roll away the headsail!"
+      ],
+      "example": "Furl the genoa, it's gusting hard!"
+    },
+    {
+      "id": "cmd-slip-the-mooring",
+      "term": "Slip the mooring!",
+      "ru": "Отдай буй / снимайся с бочки!",
+      "definition": "Instruction to let go of the mooring buoy and get under way. 'On the buoy' means pick it up and make fast.",
+      "category": "commands",
+      "role": "helm",
+      "aka": [
+        "On the buoy!"
+      ],
+      "example": "Slip the mooring — we're clear ahead!"
+    },
+    {
+      "id": "cmd-keel-up",
+      "term": "Keel up!",
+      "ru": "Подними киль!",
+      "definition": "Instruction to raise the lifting keel for shoal water; 'Drop the keel' lowers it again for stability.",
+      "category": "commands",
+      "role": "helm",
+      "aka": [
+        "Drop the keel!",
+        "Keel down!"
+      ],
+      "example": "Keel up — it's shallow ahead!"
+    },
+    {
+      "id": "cmd-off-the-winch",
+      "term": "Off the winch!",
+      "ru": "Убери руку с лебёдки!",
+      "definition": "Urgent safety call to get a hand clear of a loaded winch before it traps fingers.",
+      "category": "commands",
+      "role": "both",
+      "example": "Off the winch — riding turn!"
+    },
+    {
+      "id": "cmd-stop-the-boat",
+      "term": "Stop the boat!",
+      "ru": "Останови лодку! (человек за бортом)",
+      "definition": "First MOB action — take the way off the boat immediately by rounding up or heaving to.",
+      "category": "commands",
+      "role": "helm",
+      "example": "Man overboard — stop the boat!"
+    },
+    {
+      "id": "cmd-keep-pointing",
+      "term": "Keep pointing at them!",
+      "ru": "Не своди глаз, показывай рукой!",
+      "definition": "MOB action — one crew member does nothing but point continuously at the person in the water so they are never lost.",
+      "category": "commands",
+      "role": "crew",
+      "example": "You — keep pointing at them, don't look away!"
+    },
+    {
+      "id": "cmd-hit-mob-button",
+      "term": "Hit the MOB button!",
+      "ru": "Нажми кнопку «человек за бортом» на плоттере!",
+      "definition": "MOB action — press the MOB button on the chartplotter/GPS to mark the exact position.",
+      "category": "commands",
+      "role": "crew",
+      "example": "Hit the MOB button on the plotter now!"
+    },
+    {
+      "id": "cmd-tailing",
+      "term": "Tailing!",
+      "ru": "Держу ходовой конец / тяну!",
+      "definition": "Crew calls out that they are tailing the line off the winch during sheeting.",
+      "category": "commands",
+      "role": "crew",
+      "example": "Tailing — grind away!"
+    },
+    {
+      "id": "cmd-grinding",
+      "term": "Grind!",
+      "ru": "Крути лебёдку!",
+      "definition": "Instruction for crew to winch in a sheet as fast as possible.",
+      "category": "commands",
+      "role": "helm",
+      "example": "Grind, grind — get it in!"
+    },
+    {
+      "id": "cmd-release",
+      "term": "Release!",
+      "ru": "Отдай / сбрось (конец с лебёдки)!",
+      "definition": "Instruction to immediately release a line from the winch or clutch.",
+      "category": "commands",
+      "role": "helm",
+      "example": "Release the old sheet — she's coming round!"
     },
     {
       "id": "tailing",
@@ -800,7 +1026,7 @@
     {
       "id": "winching",
       "term": "winching",
-      "ru": "крутить лебёдку / работа на лебёдке",
+      "ru": "работа на лебёдке / грайндинг",
       "definition": "Turning the winch handle to haul in a line under load.",
       "category": "winch-work",
       "aka": [
@@ -813,6 +1039,17 @@
       "ru": "двухскоростная лебёдка",
       "definition": "A winch with a high-speed and a low-speed (high power) gear, switched by changing handle direction.",
       "category": "winch-work"
+    },
+    {
+      "id": "riding-turn",
+      "term": "riding turn",
+      "ru": "закус на лебёдке (перехлёст витков)",
+      "definition": "A jammed override where one turn traps another on the winch drum, locking the line under load.",
+      "category": "winch-work",
+      "aka": [
+        "override",
+        "overriding turn"
+      ]
     },
     {
       "id": "ease-winch",
@@ -861,7 +1098,10 @@
       "term": "pontoon",
       "ru": "понтон / плавучий причал",
       "definition": "A floating platform used as a dock or walkway in a marina.",
-      "category": "mooring"
+      "category": "mooring",
+      "aka": [
+        "dock finger"
+      ]
     },
     {
       "id": "marina",
@@ -910,7 +1150,10 @@
       "term": "fender",
       "ru": "кранец",
       "definition": "An inflated cushion hung over the boat's side to protect it from a dock or other boat.",
-      "category": "mooring"
+      "category": "mooring",
+      "aka": [
+        "bumper"
+      ]
     },
     {
       "id": "warp",
@@ -922,14 +1165,14 @@
     {
       "id": "finger-berth",
       "term": "finger berth",
-      "ru": "место с пальцем / боковым пирсом",
+      "ru": "место с боковым пальцем-пирсом",
       "definition": "A berth alongside a short finger pontoon projecting from the main dock, making it easy to step on and off.",
       "category": "mooring"
     },
     {
       "id": "shore-power",
       "term": "shore power",
-      "ru": "береговое электропитание / 220В с берега",
+      "ru": "береговое электропитание (220В с берега)",
       "definition": "Mains electricity supplied from the dock via a cable plugged into the boat.",
       "category": "mooring"
     },
@@ -937,21 +1180,21 @@
       "id": "bow-line",
       "term": "bow line",
       "ru": "носовой шварт",
-      "definition": "A mooring line from the bow to the dock, holding the forward end of the boat.",
+      "definition": "A mooring line from the bow to the dock, holding the forward end of the boat. Two words — not the 'bowline' knot.",
       "category": "mooring"
     },
     {
       "id": "aft-spring",
       "term": "aft spring",
       "ru": "кормовой шпринг",
-      "definition": "A spring line leading from a point forward on the boat aft to the dock, preventing the bow from swinging out.",
+      "definition": "A spring line leading from a point forward on the boat aft to the dock, stopping the boat surging forward.",
       "category": "mooring"
     },
     {
       "id": "forward-spring",
       "term": "forward spring",
       "ru": "носовой шпринг",
-      "definition": "A spring line leading from a point aft on the boat forward to the dock, preventing the stern from swinging out.",
+      "definition": "A spring line leading from a point aft on the boat forward to the dock, stopping the boat surging aft.",
       "category": "mooring"
     },
     {
@@ -960,6 +1203,26 @@
       "ru": "пришвартоваться лагом",
       "definition": "To moor with the boat's side parallel and adjacent to the dock or another vessel.",
       "category": "mooring"
+    },
+    {
+      "id": "mooring-buoy",
+      "term": "mooring buoy",
+      "ru": "швартовная бочка / буй",
+      "definition": "A floating buoy anchored to the seabed that a boat picks up and makes fast to instead of anchoring.",
+      "category": "mooring",
+      "aka": [
+        "buoy"
+      ]
+    },
+    {
+      "id": "lazy-line",
+      "term": "lazy line",
+      "ru": "муринг / подхватный конец",
+      "definition": "A light line led from the pontoon to a heavy ground chain, hauled up to make the bow fast in a Mediterranean stern-to berth.",
+      "category": "mooring",
+      "aka": [
+        "slime line"
+      ]
     },
     {
       "id": "anchor",
@@ -971,9 +1234,51 @@
     {
       "id": "rode",
       "term": "rode",
-      "ru": "якорная цепь / якорный конец",
+      "ru": "якорный конец (цепь/трос)",
       "definition": "The chain and/or rope connecting the anchor to the boat.",
       "category": "mooring"
+    },
+    {
+      "id": "windlass",
+      "term": "windlass",
+      "ru": "якорная лебёдка / брашпиль",
+      "definition": "A powered or manual winch on the foredeck used to raise and lower the anchor and chain.",
+      "category": "mooring"
+    },
+    {
+      "id": "scope",
+      "term": "scope",
+      "ru": "длина вытравленной цепи (относительно глубины)",
+      "definition": "The ratio of anchor rode paid out to water depth; more scope gives better holding.",
+      "category": "mooring"
+    },
+    {
+      "id": "veer-chain",
+      "term": "veer the chain",
+      "ru": "потрави цепь",
+      "definition": "To pay out more anchor chain in a controlled way to increase scope.",
+      "category": "mooring",
+      "aka": [
+        "pay out chain"
+      ]
+    },
+    {
+      "id": "snub",
+      "term": "snub",
+      "ru": "задержать конец / застопорить цепь",
+      "definition": "To check a running line or the anchor chain sharply against a cleat or the windlass to stop it.",
+      "category": "mooring"
+    },
+    {
+      "id": "dug-in",
+      "term": "dug in",
+      "ru": "якорь забрал / зарылся",
+      "definition": "The anchor has set into the seabed and is holding; the boat 'brings up' as the rode comes taut.",
+      "category": "mooring",
+      "aka": [
+        "brought up",
+        "set"
+      ]
     },
     {
       "id": "chart",
@@ -992,7 +1297,7 @@
     {
       "id": "gps",
       "term": "GPS",
-      "ru": "GPS / навигатор",
+      "ru": "GPS / спутниковый навигатор",
       "definition": "Global Positioning System; provides the boat's exact position using satellite signals.",
       "category": "navigation"
     },
@@ -1013,7 +1318,7 @@
     {
       "id": "heading",
       "term": "heading",
-      "ru": "курс / курсовой угол",
+      "ru": "курс (куда смотрит нос)",
       "definition": "The compass direction the bow of the boat is pointing.",
       "category": "navigation"
     },
@@ -1028,7 +1333,7 @@
       "id": "knot",
       "term": "knot",
       "ru": "узел (скорость)",
-      "definition": "A unit of speed equal to one nautical mile per hour.",
+      "definition": "A unit of speed equal to one nautical mile per hour. The 'k' is silent.",
       "category": "navigation"
     },
     {
@@ -1055,41 +1360,6 @@
         "echo sounder",
         "fishfinder"
       ]
-    },
-    {
-      "id": "tide",
-      "term": "tide",
-      "ru": "прилив / отлив",
-      "definition": "The periodic rise and fall of sea level caused by the gravitational pull of the moon and sun.",
-      "category": "navigation"
-    },
-    {
-      "id": "current",
-      "term": "current",
-      "ru": "течение",
-      "definition": "The horizontal movement of water caused by tides, wind, or ocean circulation.",
-      "category": "navigation"
-    },
-    {
-      "id": "vhf-radio",
-      "term": "VHF radio",
-      "ru": "УКВ-радиостанция / рация",
-      "definition": "Very High Frequency marine radio used for ship-to-ship and ship-to-shore communication.",
-      "category": "navigation"
-    },
-    {
-      "id": "channel-16",
-      "term": "channel 16",
-      "ru": "16-й канал",
-      "definition": "The international VHF distress, safety, and calling channel that all vessels must monitor.",
-      "category": "navigation"
-    },
-    {
-      "id": "ais",
-      "term": "AIS",
-      "ru": "АИС (автоматическая идентификационная система)",
-      "definition": "Automatic Identification System; broadcasts and receives vessel position, speed, and identity data.",
-      "category": "navigation"
     },
     {
       "id": "cog",
@@ -1120,16 +1390,72 @@
       "category": "navigation"
     },
     {
+      "id": "leeway",
+      "term": "leeway",
+      "ru": "снос под ветер / дрейф",
+      "definition": "The sideways drift of the boat downwind of its heading, caused by wind pushing on hull and rig.",
+      "category": "navigation"
+    },
+    {
+      "id": "tide",
+      "term": "tide",
+      "ru": "прилив / отлив",
+      "definition": "The periodic rise and fall of sea level caused by the gravitational pull of the moon and sun.",
+      "category": "tide"
+    },
+    {
+      "id": "current",
+      "term": "current",
+      "ru": "течение",
+      "definition": "The horizontal movement of water caused by tides, wind, or ocean circulation.",
+      "category": "tide"
+    },
+    {
+      "id": "flood-tide",
+      "term": "flood tide",
+      "ru": "прилив (вода прибывает)",
+      "definition": "The incoming tide, when the sea level is rising and the tidal stream flows inshore.",
+      "category": "tide"
+    },
+    {
+      "id": "ebb-tide",
+      "term": "ebb tide",
+      "ru": "отлив (вода убывает)",
+      "definition": "The outgoing tide, when the sea level is falling and the tidal stream flows seaward.",
+      "category": "tide"
+    },
+    {
+      "id": "slack-water",
+      "term": "slack water",
+      "ru": "стоячая вода (между приливом и отливом)",
+      "definition": "The short period at high or low tide when the tidal stream is barely moving — the easiest time to manoeuvre.",
+      "category": "tide"
+    },
+    {
+      "id": "spring-tide",
+      "term": "spring tide",
+      "ru": "сизигийный (большой) прилив",
+      "definition": "The larger tidal range around new and full moon, with faster streams. Nothing to do with springtime.",
+      "category": "tide"
+    },
+    {
+      "id": "tidal-stream",
+      "term": "tidal stream",
+      "ru": "приливо-отливное течение",
+      "definition": "The horizontal flow of water driven by the tide, given in knots and direction on charts and almanacs.",
+      "category": "tide"
+    },
+    {
       "id": "beaufort-scale",
       "term": "Beaufort scale",
-      "ru": "шкала Бофора",
+      "ru": "шкала Бофорта",
       "definition": "A scale from 0 (calm) to 12 (hurricane) that classifies wind speed by its effects on the sea surface.",
       "category": "weather"
     },
     {
       "id": "force",
       "term": "force",
-      "ru": "балл (по Бофору)",
+      "ru": "балл (по Бофорту)",
       "definition": "A number on the Beaufort scale describing wind strength, e.g. Force 4 = moderate breeze.",
       "category": "weather"
     },
@@ -1137,7 +1463,7 @@
       "id": "knots-wind",
       "term": "knots (wind)",
       "ru": "узлы (скорость ветра)",
-      "definition": "Wind speed expressed in nautical miles per hour; 1 knot ≈ 0.5 m/s.",
+      "definition": "Wind speed expressed in nautical miles per hour; 1 knot is about 0.5 m/s.",
       "category": "weather"
     },
     {
@@ -1151,7 +1477,7 @@
       "id": "squall",
       "term": "squall",
       "ru": "шквал",
-      "definition": "A sudden, brief, intense storm with strong winds and often rain, lasting minutes.",
+      "definition": "A sudden, brief, intense burst of strong wind, often with rain, lasting minutes.",
       "category": "weather"
     },
     {
@@ -1164,8 +1490,22 @@
     {
       "id": "chop",
       "term": "chop",
-      "ru": "волнение / кильватерная зыбь / толчея",
+      "ru": "толчея / короткая волна",
       "definition": "Short, steep, irregular waves typically caused by local wind on shallow water.",
+      "category": "weather"
+    },
+    {
+      "id": "visibility",
+      "term": "visibility",
+      "ru": "видимость",
+      "definition": "How far you can see; given in forecasts as good, moderate, poor, or fog.",
+      "category": "weather"
+    },
+    {
+      "id": "fog",
+      "term": "fog",
+      "ru": "туман",
+      "definition": "Thick water vapour reducing visibility below 1,000 metres; requires sound signals and a radar/AIS watch.",
       "category": "weather"
     },
     {
@@ -1178,14 +1518,14 @@
     {
       "id": "veering",
       "term": "veering",
-      "ru": "поворот ветра по часовой стрелке",
+      "ru": "заход ветра по часовой стрелке",
       "definition": "A clockwise shift in wind direction, e.g. from SW to W to NW.",
       "category": "weather"
     },
     {
       "id": "backing",
       "term": "backing",
-      "ru": "поворот ветра против часовой стрелки",
+      "ru": "заход ветра против часовой стрелки",
       "definition": "An anti-clockwise shift in wind direction, e.g. from SW to S to SE.",
       "category": "weather"
     },
@@ -1218,15 +1558,191 @@
       "category": "weather"
     },
     {
+      "id": "engine",
+      "term": "engine",
+      "ru": "двигатель / мотор",
+      "definition": "The auxiliary inboard Yanmar diesel used when there is no wind or for manoeuvring in harbour.",
+      "category": "engine"
+    },
+    {
+      "id": "throttle",
+      "term": "throttle",
+      "ru": "ручка газа / дроссель",
+      "definition": "The lever controlling engine speed and gear (forward/neutral/reverse).",
+      "category": "engine"
+    },
+    {
+      "id": "saildrive",
+      "term": "saildrive",
+      "ru": "сейлдрайв (угловая колонка привода)",
+      "definition": "A drive leg passing straight down through the hull to the propeller, as fitted to the Django's Yanmar diesel.",
+      "category": "engine"
+    },
+    {
+      "id": "prop-walk",
+      "term": "prop walk",
+      "ru": "увод кормы (боковой снос от винта)",
+      "definition": "The sideways kick of the stern caused by propeller rotation, strongest in reverse — use it to help spring off a berth.",
+      "category": "engine"
+    },
+    {
+      "id": "ahead",
+      "term": "ahead",
+      "ru": "передний ход / вперёд",
+      "definition": "Engine in forward gear driving the boat forwards. 'Slow ahead', 'half ahead', 'full ahead' set the speed.",
+      "category": "engine"
+    },
+    {
+      "id": "astern",
+      "term": "astern",
+      "ru": "задний ход / назад",
+      "definition": "Engine in reverse gear driving the boat backwards.",
+      "category": "engine"
+    },
+    {
+      "id": "neutral",
+      "term": "neutral",
+      "ru": "нейтраль",
+      "definition": "Gear disengaged so the engine runs without driving the propeller.",
+      "category": "engine"
+    },
+    {
+      "id": "tick-over",
+      "term": "tick over",
+      "ru": "холостые обороты / малый газ",
+      "definition": "The engine idling at its lowest steady speed.",
+      "category": "engine",
+      "aka": [
+        "idle"
+      ]
+    },
+    {
+      "id": "revs",
+      "term": "revs",
+      "ru": "обороты (двигателя)",
+      "definition": "Engine speed in revolutions per minute; 'give her some revs' means increase power.",
+      "category": "engine",
+      "aka": [
+        "RPM"
+      ]
+    },
+    {
+      "id": "no-steerage",
+      "term": "no steerage",
+      "ru": "нет хода / руль не слушается",
+      "definition": "The boat is moving too slowly for the rudder to bite, so steering has no effect.",
+      "category": "engine",
+      "aka": [
+        "she's not responding"
+      ]
+    },
+    {
+      "id": "motor-sailing",
+      "term": "motor-sailing",
+      "ru": "идти под мотором и парусом",
+      "definition": "Running the engine with sails set at the same time, for speed or to hold course in light or foul wind.",
+      "category": "engine"
+    },
+    {
+      "id": "engine-alarm",
+      "term": "engine alarm",
+      "ru": "сигнал тревоги двигателя",
+      "definition": "An audible or visual warning indicating an engine fault such as overheating or low oil pressure.",
+      "category": "engine",
+      "trainable": false
+    },
+    {
+      "id": "impeller",
+      "term": "impeller",
+      "ru": "крыльчатка помпы охлаждения",
+      "definition": "The rubber pump rotor that circulates raw water to cool the engine; must be replaced regularly.",
+      "category": "engine",
+      "trainable": false
+    },
+    {
+      "id": "kill-switch",
+      "term": "kill switch",
+      "ru": "кнопка/тросик аварийной остановки двигателя",
+      "definition": "The engine stop button or pull-cable on the panel that shuts the Yanmar down by cutting its fuel supply.",
+      "category": "engine",
+      "aka": [
+        "stop button",
+        "engine cut-off"
+      ]
+    },
+    {
+      "id": "vhf-radio",
+      "term": "VHF radio",
+      "ru": "УКВ-радиостанция / рация",
+      "definition": "Very High Frequency marine radio used for ship-to-ship and ship-to-shore communication.",
+      "category": "vhf"
+    },
+    {
+      "id": "channel-16",
+      "term": "channel 16",
+      "ru": "16-й канал (вызов и бедствие)",
+      "definition": "The international VHF distress, safety, and calling channel that all vessels must monitor.",
+      "category": "vhf"
+    },
+    {
+      "id": "ais",
+      "term": "AIS",
+      "ru": "АИС (автоматическая идентификационная система)",
+      "definition": "Automatic Identification System; broadcasts and receives vessel position, speed, and identity data.",
+      "category": "vhf"
+    },
+    {
+      "id": "radio-check",
+      "term": "radio check",
+      "ru": "проверка связи",
+      "definition": "A call (not on channel 16) asking another station to confirm how well your transmission is being received.",
+      "category": "vhf"
+    },
+    {
+      "id": "say-again",
+      "term": "say again",
+      "ru": "повторите (радиофраза)",
+      "definition": "Standard radio phrase asking the other station to repeat their last message. Never say 'repeat' on the radio.",
+      "category": "vhf"
+    },
+    {
+      "id": "mayday",
+      "term": "Mayday",
+      "ru": "Мэйдэй / сигнал бедствия",
+      "definition": "The international radio distress call for immediate, life-threatening danger; spoken three times on channel 16.",
+      "category": "vhf"
+    },
+    {
+      "id": "pan-pan",
+      "term": "Pan-Pan",
+      "ru": "Пан-Пан / сигнал срочности",
+      "definition": "An urgent radio call for situations that are serious but not immediately life-threatening.",
+      "category": "vhf"
+    },
+    {
+      "id": "securite",
+      "term": "Sécurité",
+      "ru": "Секюритэ / сигнал безопасности",
+      "definition": "The safety-signal radio prefix for navigational or weather warnings; spoken three times, completes the Mayday / Pan-Pan / Sécurité triad.",
+      "category": "vhf"
+    },
+    {
+      "id": "vhf-distress",
+      "term": "VHF distress call",
+      "ru": "вызов бедствия по рации",
+      "definition": "A standardised radio call on channel 16 giving vessel name, position, nature of distress, and number of people on board.",
+      "category": "vhf",
+      "trainable": false
+    },
+    {
       "id": "life-jacket",
       "term": "life jacket",
       "ru": "спасательный жилет",
-      "definition": "A buoyancy aid worn to keep a person afloat in the water; ideally self-inflating.",
+      "definition": "A personal flotation device worn to keep a person afloat; ideally self-inflating with a crotch strap.",
       "category": "safety",
       "aka": [
         "PFD",
-        "personal flotation device",
-        "buoyancy aid"
+        "personal flotation device"
       ]
     },
     {
@@ -1239,7 +1755,7 @@
     {
       "id": "tether",
       "term": "tether",
-      "ru": "страховочный леер / конец",
+      "ru": "страховочный конец (от обвязки)",
       "definition": "A line clipped from the harness to a jackline or strong point to keep crew on the boat.",
       "category": "safety",
       "aka": [
@@ -1249,7 +1765,7 @@
     {
       "id": "jackline",
       "term": "jackline",
-      "ru": "леер безопасности",
+      "ru": "страховочный леер (по палубе)",
       "definition": "A strong line or strap running along the deck fore and aft to which tethers can be clipped.",
       "category": "safety",
       "aka": [
@@ -1268,23 +1784,35 @@
       "trainable": false
     },
     {
+      "id": "cmd-man-overboard",
+      "term": "Man overboard!",
+      "ru": "Человек за бортом!",
+      "definition": "Emergency call when a person has fallen into the water — initiates the MOB procedure.",
+      "category": "commands",
+      "role": "both",
+      "aka": [
+        "MOB!"
+      ],
+      "example": "Man overboard, port side!"
+    },
+    {
       "id": "epirb",
       "term": "EPIRB",
       "ru": "АРБ (аварийный радиобуй)",
-      "definition": "Emergency Position Indicating Radio Beacon — activates automatically in water and transmits distress signal to satellites.",
+      "definition": "Emergency Position Indicating Radio Beacon — activates in water and transmits a distress signal to satellites.",
       "category": "safety"
     },
     {
       "id": "flare",
       "term": "flare",
-      "ru": "ракета / фальшфейер",
+      "ru": "фальшфейер / сигнальная ракета",
       "definition": "A pyrotechnic signalling device used to indicate distress or location.",
       "category": "safety"
     },
     {
       "id": "bilge-pump",
       "term": "bilge pump",
-      "ru": "помпа / трюмная помпа",
+      "ru": "трюмная помпа",
       "definition": "A manual or electric pump used to remove water from the bilge.",
       "category": "safety"
     },
@@ -1296,49 +1824,16 @@
       "category": "safety"
     },
     {
-      "id": "mayday",
-      "term": "Mayday",
-      "ru": "Мэйдэй / сигнал бедствия",
-      "definition": "The international radio distress call for immediate life-threatening danger; repeated three times on channel 16.",
-      "category": "safety"
-    },
-    {
-      "id": "pan-pan",
-      "term": "Pan-Pan",
-      "ru": "Пан-Пан / сигнал срочности",
-      "definition": "An urgent safety radio call for situations that are serious but not immediately life-threatening.",
-      "category": "safety"
-    },
-    {
-      "id": "kill-switch",
-      "term": "kill switch",
-      "ru": "аварийный выключатель двигателя / шнур безопасности",
-      "definition": "A cord clipped to the helm that cuts the engine if the helmsperson is thrown from the tiller.",
-      "category": "safety",
-      "aka": [
-        "engine cut-off",
-        "dead man's switch"
-      ]
-    },
-    {
       "id": "life-raft",
       "term": "life raft",
       "ru": "спасательный плот",
-      "definition": "An inflatable raft stowed on deck that deploys automatically when the boat sinks.",
+      "definition": "An inflatable raft stowed on deck that deploys and inflates when the boat has to be abandoned.",
       "category": "safety"
-    },
-    {
-      "id": "vhf-distress",
-      "term": "VHF distress call",
-      "ru": "вызов бедствия по рации",
-      "definition": "A standardised radio call on channel 16 giving vessel name, position, nature of distress, and number of people on board.",
-      "category": "safety",
-      "trainable": false
     },
     {
       "id": "dan-buoy",
       "term": "danbuoy",
-      "ru": "буй человека за бортом",
+      "ru": "буй человека за бортом (с флагом и огнём)",
       "definition": "A tall floating marker with a flag and light deployed immediately when someone goes overboard to mark their position.",
       "category": "safety",
       "aka": [
@@ -1349,33 +1844,349 @@
     {
       "id": "throwbag",
       "term": "throw bag",
-      "ru": "спасательный мешок / метательный конец",
+      "ru": "спасательный метательный конец",
       "definition": "A bag containing a coiled floating line that can be thrown to a person in the water.",
       "category": "safety"
     },
     {
-      "id": "cmd-tailing",
-      "term": "Tailing!",
-      "ru": "Тяну / Держу конец!",
-      "definition": "Crew calls out that they are tailing the line off the winch during sheeting.",
-      "category": "commands",
-      "role": "crew"
+      "id": "galley",
+      "term": "galley",
+      "ru": "камбуз (кухня)",
+      "definition": "The kitchen area on a boat, with a stove, sink, and food storage.",
+      "category": "domestic"
     },
     {
-      "id": "cmd-grinding",
-      "term": "Grind!",
-      "ru": "Крути лебёдку!",
-      "definition": "Instruction for crew to winch in a sheet as fast as possible.",
-      "category": "commands",
-      "role": "helm"
+      "id": "saloon",
+      "term": "saloon",
+      "ru": "кают-компания",
+      "definition": "The main living and dining cabin below deck.",
+      "category": "domestic",
+      "aka": [
+        "salon"
+      ]
     },
     {
-      "id": "cmd-release",
-      "term": "Release!",
-      "ru": "Отдай! / Выбивай!",
-      "definition": "Instruction to immediately release a line from the winch or clutch.",
-      "category": "commands",
-      "role": "helm"
+      "id": "berth-bunk",
+      "term": "berth",
+      "ru": "койка / спальное место",
+      "definition": "A bed or sleeping place on board. Note: 'berth' also means a mooring space — context decides.",
+      "category": "domestic",
+      "aka": [
+        "bunk"
+      ]
+    },
+    {
+      "id": "chart-table",
+      "term": "chart table",
+      "ru": "штурманский стол",
+      "definition": "The navigator's desk below deck where charts are worked and instruments are mounted.",
+      "category": "domestic"
+    },
+    {
+      "id": "heads",
+      "term": "heads",
+      "ru": "гальюн (туалет)",
+      "definition": "The toilet on a boat, and the compartment containing it. Always plural — 'the heads' — not to be confused with the head of a sail.",
+      "category": "domestic",
+      "aka": [
+        "toilet",
+        "head"
+      ]
+    },
+    {
+      "id": "seacock",
+      "term": "seacock",
+      "ru": "кингстон (забортный клапан)",
+      "definition": "A valve on a hull skin-fitting that opens or closes a pipe to the sea; closing seacocks before leaving the boat is a key safety habit.",
+      "category": "domestic"
+    },
+    {
+      "id": "stove",
+      "term": "stove",
+      "ru": "плита / камбузная плита",
+      "definition": "The gimballed cooker in the galley, usually gas, that stays level as the boat heels.",
+      "category": "domestic",
+      "aka": [
+        "hob",
+        "cooker"
+      ]
+    },
+    {
+      "id": "gas-bottle",
+      "term": "gas bottle",
+      "ru": "газовый баллон",
+      "definition": "The pressurised cylinder supplying the stove; its seacock-style valve is shut off when not cooking, for safety.",
+      "category": "domestic"
+    },
+    {
+      "id": "fresh-water-tank",
+      "term": "fresh water tank",
+      "ru": "бак пресной воды",
+      "definition": "The onboard tank holding drinking and washing water, fed to the galley and heads by a pump.",
+      "category": "domestic",
+      "aka": [
+        "water tank"
+      ]
+    },
+    {
+      "id": "tender",
+      "term": "tender",
+      "ru": "тузик / вспомогательная лодка",
+      "definition": "The small boat used to ferry crew between the yacht and the shore when at anchor or on a buoy.",
+      "category": "tender"
+    },
+    {
+      "id": "dinghy",
+      "term": "dinghy",
+      "ru": "надувная/малая лодка (динги)",
+      "definition": "A small open boat; a rigid-hulled inflatable is a RIB. Used as the yacht's tender.",
+      "category": "tender",
+      "aka": [
+        "RIB",
+        "inflatable"
+      ]
+    },
+    {
+      "id": "outboard",
+      "term": "outboard",
+      "ru": "подвесной мотор",
+      "definition": "A small petrol engine clamped to the transom of the tender.",
+      "category": "tender",
+      "aka": [
+        "outboard motor"
+      ]
+    },
+    {
+      "id": "painter",
+      "term": "painter",
+      "ru": "фалинь (носовой конец тузика)",
+      "definition": "The bow line of the tender, used to tow it or make it fast. Nothing to do with painting.",
+      "category": "tender"
+    },
+    {
+      "id": "oars",
+      "term": "oars",
+      "ru": "вёсла",
+      "definition": "The paired blades used to row the tender when the outboard is off or fails.",
+      "category": "tender"
+    },
+    {
+      "id": "ferry-ashore",
+      "term": "ferry ashore",
+      "ru": "перевезти на берег (на тузике)",
+      "definition": "To carry crew or gear from the anchored yacht to the shore in the tender.",
+      "category": "tender"
+    }
+  ],
+  "sequences": [
+    {
+      "id": "tack",
+      "name": "Tacking",
+      "ru": "Поворот оверштаг",
+      "steps": [
+        {
+          "call": "Ready about?",
+          "ru": "Готовы к повороту?",
+          "by": "helm"
+        },
+        {
+          "call": "Ready!",
+          "ru": "Готов!",
+          "by": "crew"
+        },
+        {
+          "call": "Lee-oh!",
+          "ru": "Кладу руль под ветер!",
+          "by": "helm"
+        },
+        {
+          "call": "Release! ... Sheet in!",
+          "ru": "Отдай старый шкот, выбирай новый!",
+          "by": "crew"
+        }
+      ]
+    },
+    {
+      "id": "gybe",
+      "name": "Gybing",
+      "ru": "Поворот фордевинд",
+      "steps": [
+        {
+          "call": "Stand by to gybe!",
+          "ru": "Приготовиться к повороту фордевинд!",
+          "by": "helm"
+        },
+        {
+          "call": "Ready!",
+          "ru": "Готов!",
+          "by": "crew"
+        },
+        {
+          "call": "Gybe-oh!",
+          "ru": "Поворот фордевинд!",
+          "by": "helm"
+        },
+        {
+          "call": "Watch your head!",
+          "ru": "Берегись гика!",
+          "by": "both"
+        }
+      ]
+    },
+    {
+      "id": "mob",
+      "name": "Man overboard",
+      "ru": "Человек за бортом",
+      "steps": [
+        {
+          "call": "Man overboard!",
+          "ru": "Человек за бортом!",
+          "by": "both"
+        },
+        {
+          "call": "Stop the boat!",
+          "ru": "Останови лодку!",
+          "by": "helm"
+        },
+        {
+          "call": "Throw the danbuoy!",
+          "ru": "Бросай буй и плавучий конец за борт!",
+          "by": "crew"
+        },
+        {
+          "call": "Keep pointing at them!",
+          "ru": "Не своди глаз, показывай!",
+          "by": "crew"
+        },
+        {
+          "call": "Hit the MOB button!",
+          "ru": "Нажми кнопку MOB на плоттере!",
+          "by": "crew"
+        },
+        {
+          "call": "Come alongside — get a line on them!",
+          "ru": "Подходи вплотную — заведи на него конец!",
+          "by": "both"
+        }
+      ]
+    },
+    {
+      "id": "leaving-berth",
+      "name": "Leaving the berth",
+      "ru": "Отход от причала",
+      "steps": [
+        {
+          "call": "Fenders down!",
+          "ru": "Вывесить кранцы!",
+          "by": "helm"
+        },
+        {
+          "call": "Lines ready!",
+          "ru": "Швартовы готовы!",
+          "by": "crew"
+        },
+        {
+          "call": "Let go forward!",
+          "ru": "Отдай носовой!",
+          "by": "helm"
+        },
+        {
+          "call": "Let go aft!",
+          "ru": "Отдай кормовой!",
+          "by": "helm"
+        },
+        {
+          "call": "All clear!",
+          "ru": "Чисто, отходим!",
+          "by": "crew"
+        }
+      ]
+    },
+    {
+      "id": "anchoring",
+      "name": "Anchoring",
+      "ru": "Постановка на якорь",
+      "steps": [
+        {
+          "call": "Stand by the anchor!",
+          "ru": "К якорю готовься!",
+          "by": "helm"
+        },
+        {
+          "call": "Let go the anchor!",
+          "ru": "Отдать якорь!",
+          "by": "helm"
+        },
+        {
+          "call": "Veer the chain!",
+          "ru": "Потрави цепь!",
+          "by": "helm"
+        },
+        {
+          "call": "She's dug in!",
+          "ru": "Якорь забрал!",
+          "by": "crew"
+        }
+      ]
+    },
+    {
+      "id": "mooring-buoy",
+      "name": "Picking up a mooring buoy",
+      "ru": "Швартовка на бочку",
+      "steps": [
+        {
+          "call": "Ready on the buoy!",
+          "ru": "Готовься к бочке (багром)!",
+          "by": "helm"
+        },
+        {
+          "call": "Slow ahead!",
+          "ru": "Малый вперёд!",
+          "by": "helm"
+        },
+        {
+          "call": "Got it!",
+          "ru": "Поймал!",
+          "by": "crew"
+        },
+        {
+          "call": "Made fast!",
+          "ru": "Закреплено!",
+          "by": "crew"
+        }
+      ]
+    },
+    {
+      "id": "reefing",
+      "name": "Reefing in a blow",
+      "ru": "Взять рифы (в свежий ветер)",
+      "steps": [
+        {
+          "call": "We need to reef!",
+          "ru": "Надо брать рифы!",
+          "by": "helm"
+        },
+        {
+          "call": "Head up! ... Ease the main!",
+          "ru": "Приводись, потрави грот!",
+          "by": "helm"
+        },
+        {
+          "call": "Drop the halyard!",
+          "ru": "Потрави фал!",
+          "by": "crew"
+        },
+        {
+          "call": "Reef in — haul on!",
+          "ru": "Заводи риф — выбирай!",
+          "by": "crew"
+        },
+        {
+          "call": "Hoist and sheet on!",
+          "ru": "Поднимай и выбирай грота-шкот!",
+          "by": "both"
+        }
+      ]
     }
   ]
 }
