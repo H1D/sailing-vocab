@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import type { Category, LeitnerState, Term } from '../types/index'
+import { CATEGORIES } from '../types/index'
+import { CATEGORY_META } from '../categories'
 import PointsOfSail from '../components/PointsOfSail'
 
 interface Props {
@@ -7,23 +9,7 @@ interface Props {
   leitnerState: LeitnerState
 }
 
-const CATEGORY_META: Record<Category, { icon: string; label: string }> = {
-  parts: { icon: '🚢', label: 'Parts of Boat' },
-  sails: { icon: '⛵', label: 'Sails' },
-  'points-of-sail': { icon: '🧭', label: 'Points of Sail' },
-  commands: { icon: '📢', label: 'Commands' },
-  'winch-work': { icon: '⚙️', label: 'Winch Work' },
-  mooring: { icon: '⚓', label: 'Mooring' },
-  rigging: { icon: '🔗', label: 'Rigging' },
-  navigation: { icon: '🗺️', label: 'Navigation' },
-  weather: { icon: '🌬️', label: 'Weather' },
-  safety: { icon: '🛟', label: 'Safety' },
-}
-
-const ALL_CATEGORIES: Category[] = [
-  'parts', 'sails', 'points-of-sail', 'commands', 'winch-work',
-  'mooring', 'rigging', 'navigation', 'weather', 'safety',
-]
+const ALL_CATEGORIES: readonly Category[] = CATEGORIES
 
 function roleBadge(role: string) {
   const cfg: Record<string, { label: string; cls: string }> = {
@@ -74,6 +60,11 @@ function TermCard({ term, leitnerState }: { term: Term; leitnerState: LeitnerSta
       {expanded && (
         <div className="px-4 pb-4 border-t border-slate-700 dark:border-slate-800 pt-3 space-y-2">
           <p className="text-slate-200 dark:text-red-200 text-sm leading-relaxed">{term.definition}</p>
+          {term.example && (
+            <p className="text-sky-200 dark:text-red-200 text-sm italic leading-relaxed border-l-2 border-sky-500/50 dark:border-red-500/50 pl-3">
+              "{term.example}"
+            </p>
+          )}
           {term.aka && term.aka.length > 0 && (
             <p className="text-slate-400 dark:text-slate-500 text-xs">Also known as: {term.aka.join(', ')}</p>
           )}

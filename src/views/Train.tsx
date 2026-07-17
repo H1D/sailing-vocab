@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { LeitnerState, Term } from '../types/index'
 import { useLeitner } from '../hooks/useLeitner'
 import { useTTS } from '../hooks/useTTS'
+import { categoryLabel } from '../categories'
 import PointsOfSail from '../components/PointsOfSail'
 
 interface Props {
@@ -24,22 +25,9 @@ function roleBadge(role: string) {
   )
 }
 
-const CATEGORY_LABELS: Record<string, string> = {
-  parts: 'Parts',
-  sails: 'Sails',
-  'points-of-sail': 'Points of Sail',
-  commands: 'Commands',
-  'winch-work': 'Winch Work',
-  mooring: 'Mooring',
-  rigging: 'Rigging',
-  navigation: 'Navigation',
-  weather: 'Weather',
-  safety: 'Safety',
-}
-
 export default function Train({ terms, leitnerState: _externalState, onUpdate }: Props) {
   const leitner = useLeitner(terms)
-  const { speak, isSupported } = useTTS()
+  const { speak, hasEnglishVoice } = useTTS()
 
   // Sync external leitner state if needed - we use the hook's internal state
   // but propagate updates upward via onUpdate
@@ -73,6 +61,15 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
 
   const currentTerm = session[cardIndex]
   const progress = sessionTotal > 0 ? cardIndex / sessionTotal : 0
+
+  // Autoplay the English term/example on reveal — best-effort only. Silent if no
+  // voice loaded; never blocks the reveal itself (that's plain state above).
+  useEffect(() => {
+    if (flipped && hasEnglishVoice && currentTerm) {
+      speak(currentTerm.example || currentTerm.term)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [flipped, cardIndex])
 
   function advance() {
     const next = cardIndex + 1
@@ -114,6 +111,15 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
     setAnswered('still-learning')
     leitner.markStillLearning(currentTerm.id)
   }
+
+  // Auto-advance shortly after an answer so no "Next" tap is needed.
+  // The brief delay lets the ✓/✗ feedback flash register.
+  useEffect(() => {
+    if (!answered) return
+    const t = setTimeout(advance, 700)
+    return () => clearTimeout(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [answered])
 
   // Touch swipe handlers
   function onTouchStart(e: React.TouchEvent) {
@@ -224,10 +230,10 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
         >
-          {/* TTS button */}
-          {isSupported && (
+          {/* TTS button — best-effort; only shows when an English voice loaded. */}
+          {hasEnglishVoice && (
             <button
-              className="absolute top-4 right-4 text-2xl text-slate-400 hover:text-white p-2"
+              className="absolute top-2 right-2 text-2xl text-slate-400 hover:text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
               onClick={e => { e.stopPropagation(); speak(currentTerm.term) }}
               aria-label="Speak term"
             >
@@ -237,7 +243,7 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
 
           {/* Category badge */}
           <span className="bg-slate-700 dark:bg-slate-800 text-slate-300 dark:text-slate-400 text-xs px-3 py-1 rounded-full">
-            {CATEGORY_LABELS[currentTerm.category] ?? currentTerm.category}
+            {categoryLabel(currentTerm.category)}
           </span>
 
           {!flipped ? (
@@ -261,8 +267,17 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
                   "{currentTerm.term}"
                 </div>
               )}
+
               <p className="text-white dark:text-red-200 text-base leading-relaxed">{currentTerm.definition}</p>
               <p className="text-slate-400 dark:text-red-400 text-sm">{currentTerm.ru}</p>
+
+              {/* Real on-deck usage line */}
+              {currentTerm.example && (
+                <p className="text-sky-200 dark:text-red-200 text-sm italic leading-relaxed border-l-2 border-sky-500/50 dark:border-red-500/50 pl-3 mx-auto max-w-xs text-left">
+                  "{currentTerm.example}"
+                </p>
+              )}
+
               {currentTerm.role && roleBadge(currentTerm.role)}
               {currentTerm.category === 'points-of-sail' && (
                 <div className="mt-2">

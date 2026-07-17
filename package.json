@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
+    "typecheck": "tsc -b",
+    "check": "bun scripts/check-vocab.ts",
     "preview": "vite preview"
   },
   "dependencies": {

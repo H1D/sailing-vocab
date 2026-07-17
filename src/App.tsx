@@ -19,6 +19,7 @@ const NAV_TABS = [
 
 const data = vocabData as unknown as VocabData
 const allTerms: Term[] = data.terms ?? []
+const allSequences = data.sequences ?? []
 
 export default function App() {
   // Navigation
@@ -141,7 +142,7 @@ export default function App() {
           <Drill terms={allTerms} />
         )}
         {view === '#cheatsheet' && (
-          <CheatSheet terms={allTerms} />
+          <CheatSheet terms={allTerms} sequences={allSequences} />
         )}
       </main>
 
