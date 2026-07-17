@@ -1,14 +1,25 @@
-export type Category =
-  | 'parts'
-  | 'sails'
-  | 'points-of-sail'
-  | 'commands'
-  | 'winch-work'
-  | 'mooring'
-  | 'rigging'
-  | 'navigation'
-  | 'weather'
-  | 'safety'
+// Single source of truth for categories. The `Category` type derives from this
+// array, and scripts/check-vocab.ts imports it, so the CI data-check can never
+// drift from the type. Add a new category id here (and render it in the UI).
+export const CATEGORIES = [
+  'parts',
+  'sails',
+  'points-of-sail',
+  'commands',
+  'winch-work',
+  'mooring',
+  'rigging',
+  'navigation',
+  'weather',
+  'safety',
+  'engine',
+  'vhf',
+  'tender',
+  'tide',
+  'domestic',
+] as const
+
+export type Category = (typeof CATEGORIES)[number]
 
 export type CommandRole = 'helm' | 'crew' | 'both'
 
@@ -21,6 +32,8 @@ export interface Term {
   aka?: string[]       // alternative names
   role?: CommandRole   // only for 'commands' category
   trainable?: boolean  // false = reference only (Browse), excluded from Train rotation. Default true.
+  pron?: string        // optional pronunciation hint tuned to a Russian speaker's traps (e.g. gunwale "GUN-nel")
+  example?: string     // optional short real on-deck usage line (e.g. "Ease the mainsheet!")
 }
 
 export interface VocabData {

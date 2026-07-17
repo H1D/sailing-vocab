@@ -18,11 +18,17 @@ const CATEGORY_META: Record<Category, { icon: string; label: string }> = {
   navigation: { icon: '🗺️', label: 'Navigation' },
   weather: { icon: '🌬️', label: 'Weather' },
   safety: { icon: '🛟', label: 'Safety' },
+  engine: { icon: '🔧', label: 'Engine' },
+  vhf: { icon: '📻', label: 'VHF & Radio' },
+  tender: { icon: '🛶', label: 'Tender & Dinghy' },
+  tide: { icon: '🌊', label: 'Tide & Pilotage' },
+  domestic: { icon: '🍽️', label: 'Onboard Systems' },
 }
 
 const ALL_CATEGORIES: Category[] = [
   'parts', 'sails', 'points-of-sail', 'commands', 'winch-work',
   'mooring', 'rigging', 'navigation', 'weather', 'safety',
+  'engine', 'vhf', 'tender', 'tide', 'domestic',
 ]
 
 function roleBadge(role: string) {
