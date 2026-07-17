@@ -262,14 +262,17 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
           ) : (
             /* Back */
             <div className="text-center space-y-3 w-full">
-              {currentTerm.category === 'commands' && (
-                <div className="text-2xl font-bold text-sky-300 dark:text-red-300">
-                  "{currentTerm.term}"
-                </div>
-              )}
+              {/* Original word — always shown on reveal so you see the word AND its meaning together */}
+              <div className="text-3xl font-bold text-white dark:text-red-300 leading-tight">
+                {currentTerm.category === 'commands' ? `"${currentTerm.term}"` : currentTerm.term}
+              </div>
 
-              <p className="text-white dark:text-red-200 text-base leading-relaxed">{currentTerm.definition}</p>
-              <p className="text-slate-400 dark:text-red-400 text-sm">{currentTerm.ru}</p>
+              {/* Russian translation — the answer; kept large and legible, not a tiny caption */}
+              <div className="text-2xl font-semibold text-sky-300 dark:text-red-400 leading-snug">
+                {currentTerm.ru}
+              </div>
+
+              <p className="text-slate-300 dark:text-red-200 text-sm leading-relaxed">{currentTerm.definition}</p>
 
               {/* Real on-deck usage line */}
               {currentTerm.example && (
