@@ -47,11 +47,6 @@ function TermCard({ term, leitnerState }: { term: Term; leitnerState: LeitnerSta
         {leitnerDot(term.id, leitnerState)}
         <div className="flex-1 min-w-0">
           <span className="font-bold text-white dark:text-red-300 text-base">{term.term}</span>
-          {term.pron && (
-            <span className="font-mono text-amber-300 dark:text-red-400 text-xs ml-2 whitespace-nowrap">
-              {term.pron}
-            </span>
-          )}
           {term.aka && term.aka.length > 0 && (
             <span className="text-slate-400 dark:text-slate-500 text-xs ml-2">
               aka {term.aka.join(', ')}
@@ -64,12 +59,6 @@ function TermCard({ term, leitnerState }: { term: Term; leitnerState: LeitnerSta
 
       {expanded && (
         <div className="px-4 pb-4 border-t border-slate-700 dark:border-slate-800 pt-3 space-y-2">
-          {term.pron && (
-            <p className="text-sm">
-              <span className="text-slate-500 dark:text-slate-600">Say it: </span>
-              <span className="font-mono font-bold text-amber-300 dark:text-red-300 tracking-wide">{term.pron}</span>
-            </p>
-          )}
           <p className="text-slate-200 dark:text-red-200 text-sm leading-relaxed">{term.definition}</p>
           {term.example && (
             <p className="text-sky-200 dark:text-red-200 text-sm italic leading-relaxed border-l-2 border-sky-500/50 dark:border-red-500/50 pl-3">

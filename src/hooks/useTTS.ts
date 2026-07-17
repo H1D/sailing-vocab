@@ -3,9 +3,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 /**
  * Text-to-speech, offline-hardened.
  *
- * TTS is an ENHANCEMENT, never the teacher. On a boat with no internet, iOS /
- * Android frequently ship with NO en-GB (or any English) voice available
- * offline. The `pron` respelling in the data is the reliable teacher; this hook
+ * TTS is an ENHANCEMENT. On a boat with no internet, iOS / Android frequently
+ * ship with NO en-GB (or any English) voice available offline, so this hook
  * just lets the UI add a best-effort 🔊 button when — and only when — a usable
  * English voice actually exists.
  *
