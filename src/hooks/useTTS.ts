@@ -56,7 +56,12 @@ export function useTTS() {
       synth.onvoiceschanged = pickVoice
     }
 
+    // One-shot late re-poll: some Android WebViews populate voices without ever
+    // firing `voiceschanged`. Cheap safety net; cleared on unmount.
+    const retryId = setTimeout(pickVoice, 1000)
+
     return () => {
+      clearTimeout(retryId)
       synth.removeEventListener?.('voiceschanged', pickVoice)
       if (!synth.addEventListener) {
         synth.onvoiceschanged = prevHandler ?? null

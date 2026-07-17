@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": 1,
-    "total_terms": 240
+    "total_terms": 241
   },
   "terms": [
     {
@@ -80,7 +80,7 @@
       "ru": "трап (вход в каюту)",
       "definition": "The hatch and ladder leading below deck from the cockpit.",
       "category": "parts",
-      "pron": "кэм-ПЭ-нь-он-уэй"
+      "pron": "кэм-ПАН-ьён-уэй"
     },
     {
       "id": "bilge",
@@ -252,6 +252,17 @@
       "pron": "ТИ-ла ик-СТЭН-шн"
     },
     {
+      "id": "boathook",
+      "term": "boat hook",
+      "ru": "отпорный крюк / багор",
+      "definition": "A pole with a hooked end used to fend off, reach a mooring line, or pick up a buoy.",
+      "category": "parts",
+      "aka": [
+        "boathook"
+      ],
+      "pron": "БОУТ-хук"
+    },
+    {
       "id": "mainsail",
       "term": "mainsail",
       "ru": "грот",
@@ -273,7 +284,7 @@
       "ru": "генуя",
       "definition": "A large overlapping headsail whose clew extends past the mast.",
       "category": "sails",
-      "pron": "ДЖЕ-ноу-а"
+      "pron": "джэ-НОУ-э"
     },
     {
       "id": "spinnaker",
@@ -543,7 +554,7 @@
       "ru": "кэннингем (оттяжка передней шкаторины)",
       "definition": "A control line that pulls the luff of the mainsail down to tension it and move the draft forward.",
       "category": "rigging",
-      "pron": "КА-нин-эм"
+      "pron": "КА-нинг-эм"
     },
     {
       "id": "outhaul",
@@ -587,7 +598,7 @@
         "beating",
         "hard on the wind"
       ],
-      "pron": "КЛОУС-ХОЛД"
+      "pron": "КЛОУС-ХООЛД"
     },
     {
       "id": "close-reach",
@@ -643,8 +654,7 @@
       "definition": "The arc of wind angles (roughly 45° either side of dead upwind) where a boat cannot sail.",
       "category": "points-of-sail",
       "aka": [
-        "dead zone",
-        "the eye of the wind"
+        "dead zone"
       ],
       "pron": "НОУ-ГОУ ЗОУН"
     },
@@ -1023,7 +1033,7 @@
       "aka": [
         "Roll away the headsail!"
       ],
-      "pron": "ФЁРЛ зэ ДЖЕ-ноу-а",
+      "pron": "ФЁРЛ зэ джэ-НОУ-э",
       "example": "Furl the genoa, it's gusting hard!"
     },
     {
@@ -1599,9 +1609,6 @@
       "ru": "сизигийный (большой) прилив",
       "definition": "The larger tidal range around new and full moon, with faster streams. Nothing to do with springtime.",
       "category": "tide",
-      "aka": [
-        "neap tide"
-      ],
       "pron": "СПРИНГ ТАЙД"
     },
     {
@@ -2293,6 +2300,12 @@
           "pron": "СТОП зэ БОУТ"
         },
         {
+          "call": "Throw the danbuoy!",
+          "ru": "Бросай буй и плавучий конец за борт!",
+          "by": "crew",
+          "pron": "ФРОУ зэ ДЭН-бой"
+        },
+        {
           "call": "Keep pointing at them!",
           "ru": "Не своди глаз, показывай!",
           "by": "crew",
@@ -2305,10 +2318,10 @@
           "pron": "ХИТ зэ ЭМ-ОУ-БИ БА-тн"
         },
         {
-          "call": "Ready to recover!",
-          "ru": "Готовимся поднять на борт!",
+          "call": "Come alongside — get a line on them!",
+          "ru": "Подходи вплотную — заведи на него конец!",
           "by": "both",
-          "pron": "РЕ-ди ту ри-КА-ва"
+          "pron": "КАМ э-ЛОНГ-сайд, ГЕТ э ЛАЙН он зэм"
         }
       ]
     },

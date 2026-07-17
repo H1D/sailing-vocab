@@ -155,7 +155,7 @@ function SequenceCard({ sequence }: { sequence: ManoeuvreSequence }) {
       </div>
       <ol className="space-y-2">
         {sequence.steps.map((step, i) => (
-          <li key={i} className="flex items-start gap-3">
+          <li key={`${step.by}-${i}`} className="flex items-start gap-3">
             <span className="text-slate-500 dark:text-slate-600 text-sm font-mono flex-shrink-0 mt-0.5">
               {i + 1}.
             </span>
