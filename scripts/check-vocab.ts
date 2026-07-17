@@ -74,8 +74,12 @@ terms.forEach((t, i) => {
   if ((def.match(/[.!?](\s|$)/g) ?? []).length > 2) warn(`${where}: definition is > 2 sentences`)
 })
 
-if (raw.meta?.total_terms !== undefined && raw.meta.total_terms !== terms.length)
+if (!raw.meta || typeof raw.meta.total_terms !== 'number')
+  err('meta is missing or meta.total_terms is not a number')
+else if (raw.meta.total_terms !== terms.length)
   err(`meta.total_terms (${raw.meta.total_terms}) !== terms.length (${terms.length})`)
+if (raw.meta && typeof raw.meta.version !== 'number')
+  err('meta.version is missing or not a number')
 
 // Declared-but-unused categories are a warning (CI stays green if, say, an
 // aspirational category ends up empty) rather than a hard failure.
