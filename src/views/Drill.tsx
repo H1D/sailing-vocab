@@ -51,7 +51,7 @@ function buildCard(term: Term, pool: Term[]): QuizCard {
 }
 
 export default function Drill({ terms }: Props) {
-  const { speak, isSupported } = useTTS()
+  const { speak, hasEnglishVoice } = useTTS()
 
   const commandTerms = terms.filter(
     t => t.category === 'commands' && t.trainable !== false
@@ -80,13 +80,13 @@ export default function Drill({ terms }: Props) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [terms])
 
-  // Auto-play TTS when card changes
+  // Auto-play TTS when card changes — best-effort, only if a voice loaded.
   useEffect(() => {
-    if (current && isSupported && !hasSpoken.current) {
+    if (current && hasEnglishVoice && !hasSpoken.current) {
       hasSpoken.current = true
       speak(current.term.term)
     }
-  }, [current, isSupported, speak])
+  }, [current, hasEnglishVoice, speak])
 
   function handleSelect(optionTermId: string) {
     if (selected) return // already answered
@@ -148,9 +148,9 @@ export default function Drill({ terms }: Props) {
           "{current.term.term}"
         </div>
 
-        {isSupported && (
+        {hasEnglishVoice && (
           <button
-            className="flex items-center gap-2 bg-slate-700 dark:bg-slate-800 hover:bg-slate-600 dark:hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-xl text-sm transition-colors"
+            className="flex items-center gap-2 bg-slate-700 dark:bg-slate-800 hover:bg-slate-600 dark:hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-xl text-sm transition-colors min-h-[44px]"
             onClick={() => speak(current.term.term)}
           >
             🔊 Replay
@@ -199,9 +199,17 @@ export default function Drill({ terms }: Props) {
         })}
       </div>
 
-      {/* Role badge + Next button after answer */}
+      {/* Role badge + pronunciation + Next button after answer */}
       {selected && (
         <div className="flex flex-col gap-3 mt-2">
+          {current.term.pron && (
+            <div className="flex items-center gap-2 text-sm text-slate-300 dark:text-slate-400">
+              <span>Say it:</span>
+              <span className="font-mono font-bold text-amber-300 dark:text-red-300 tracking-wide">
+                {current.term.pron}
+              </span>
+            </div>
+          )}
           {current.term.role && (
             <div className="flex items-center gap-2 text-sm text-slate-300 dark:text-slate-400">
               <span>Command role:</span>

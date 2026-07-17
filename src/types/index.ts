@@ -36,9 +36,27 @@ export interface Term {
   example?: string     // optional short real on-deck usage line (e.g. "Ease the mainsheet!")
 }
 
+// A drilled call-and-response manoeuvre (tack, gybe, MOB, leaving berth, ...).
+// Rendered on the CheatSheet as an ordered call → response list so Artem can
+// rehearse the whole exchange, not just isolated words.
+export interface SequenceStep {
+  call: string          // the English line actually spoken on deck
+  ru: string            // Russian meaning
+  by: CommandRole       // who says it: helm / crew / both
+  pron?: string         // Russian-friendly respelling of the call
+}
+
+export interface ManoeuvreSequence {
+  id: string
+  name: string          // English name, e.g. "Tacking"
+  ru: string            // Russian name, e.g. "Поворот оверштаг"
+  steps: SequenceStep[]
+}
+
 export interface VocabData {
   meta: { version: number; total_terms: number }
   terms: Term[]
+  sequences?: ManoeuvreSequence[]
 }
 
 // Leitner SRS types

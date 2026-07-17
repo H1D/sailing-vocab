@@ -12,6 +12,10 @@ export default defineConfig({
         clientsClaim: true,
         navigateFallback: '/index.html',
         globPatterns: ['**/*.{js,css,html,ico,png,svg,json,woff2}'],
+        // The whole point of this app is to work offline on a boat. Raise the
+        // precache cap so no bundled chunk (the inlined vocab data lives in the
+        // JS) is ever silently dropped from the offline cache.
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
       },
       manifest: {
         name: 'Sailing Vocab',
