@@ -4,6 +4,7 @@ import { useLeitner } from '../hooks/useLeitner'
 import { useTTS } from '../hooks/useTTS'
 import { categoryLabel } from '../categories'
 import PointsOfSail from '../components/PointsOfSail'
+import HoldButton from '../components/HoldButton'
 
 interface Props {
   terms: Term[]
@@ -112,14 +113,18 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
     leitner.markStillLearning(currentTerm.id)
   }
 
-  // Auto-advance shortly after an answer so no "Next" tap is needed.
-  // The brief delay lets the ✓/✗ feedback flash register.
-  useEffect(() => {
-    if (!answered) return
-    const t = setTimeout(advance, 700)
-    return () => clearTimeout(t)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [answered])
+  // Drop this card from training for good (held 3s). Not an "answer" — just
+  // remove it and move on, so it never comes back in the rotation.
+  function handleRemove() {
+    if (!currentTerm) return
+    leitner.suspend(currentTerm.id)
+    advance()
+  }
+
+  // Bring all removed ("don't teach me this") cards back into rotation.
+  function handleRestore() {
+    leitner.restoreSuspended()
+  }
 
   // Touch swipe handlers
   function onTouchStart(e: React.TouchEvent) {
@@ -154,6 +159,7 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
 
   const stats = leitner.getStats()
   const nextReview = leitner.getNextReviewDate()
+  const masteryPct = stats.total > 0 ? Math.round((stats.known / stats.total) * 100) : 0
 
   // All caught up
   if (session.length === 0 || (cardIndex >= session.length)) {
@@ -181,6 +187,17 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
             <div className="text-xs text-slate-400">New</div>
           </div>
         </div>
+        <div className="text-slate-500 dark:text-slate-600 text-sm">
+          {masteryPct}% learned · {stats.total} cards
+        </div>
+        {stats.suspended > 0 && (
+          <button
+            className="text-red-400 hover:text-red-300 text-sm underline underline-offset-2"
+            onClick={handleRestore}
+          >
+            Restore {stats.suspended} removed card{stats.suspended === 1 ? '' : 's'}
+          </button>
+        )}
         {leitner.getDueCards().length > 0 && (
           <button
             className="mt-2 bg-sky-600 hover:bg-sky-500 text-white font-semibold py-3 px-8 rounded-xl"
@@ -207,8 +224,35 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
 
   return (
     <div className="flex flex-col h-full select-none">
-      {/* Progress bar */}
-      <div className="px-4 pt-4 pb-2">
+      {/* Overall lifetime progress — always visible while training */}
+      <div className="px-4 pt-3 pb-2 border-b border-slate-800/60 dark:border-slate-900">
+        <div className="flex items-center justify-between text-[11px] font-medium mb-1.5">
+          <div className="flex items-center gap-2.5">
+            <span className="text-green-400" title="Known (mastered, box 3)">✅ {stats.known}</span>
+            <span className="text-yellow-400" title="Learning (box 1–2)">📖 {stats.learning}</span>
+            <span className="text-slate-400" title="Not started yet">🆕 {stats.notStarted}</span>
+            {stats.suspended > 0 && (
+              <button
+                className="text-red-400 hover:text-red-300"
+                onClick={handleRestore}
+                title="Removed cards — tap to restore all"
+              >
+                🚫 {stats.suspended}
+              </button>
+            )}
+          </div>
+          <span className="text-slate-500">{masteryPct}% learned</span>
+        </div>
+        <div className="w-full h-1 bg-slate-700 dark:bg-slate-800 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-green-500 dark:bg-red-500 rounded-full transition-all duration-500"
+            style={{ width: `${masteryPct}%` }}
+          />
+        </div>
+      </div>
+
+      {/* Session progress bar */}
+      <div className="px-4 pt-3 pb-2">
         <div className="flex items-center justify-between text-xs text-slate-400 dark:text-slate-500 mb-1">
           <span>{doneInSession} of {totalInSession}</span>
           <span className="text-slate-500">📦 Box {leitner.state[currentTerm.id]?.box ?? '—'}</span>
@@ -308,19 +352,28 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
 
         {/* Action buttons */}
         {flipped && !answered ? (
-          <div className="flex gap-3">
-            <button
-              className="flex-1 min-h-[56px] rounded-xl bg-red-900/60 hover:bg-red-800/80 border border-red-700 text-red-200 font-semibold text-base active:scale-95 transition-transform"
-              onClick={handleStillLearning}
-            >
-              Still learning ✗
-            </button>
-            <button
-              className="flex-1 min-h-[56px] rounded-xl bg-green-900/60 hover:bg-green-800/80 border border-green-700 text-green-200 font-semibold text-base active:scale-95 transition-transform"
-              onClick={handleGotIt}
-            >
-              Got it! ✓
-            </button>
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-3">
+              <button
+                className="flex-1 min-h-[56px] rounded-xl bg-red-900/60 hover:bg-red-800/80 border border-red-700 text-red-200 font-semibold text-base active:scale-95 transition-transform"
+                onClick={handleStillLearning}
+              >
+                Still learning ✗
+              </button>
+              <button
+                className="flex-1 min-h-[56px] rounded-xl bg-green-900/60 hover:bg-green-800/80 border border-green-700 text-green-200 font-semibold text-base active:scale-95 transition-transform"
+                onClick={handleGotIt}
+              >
+                Got it! ✓
+              </button>
+            </div>
+            {/* Hold 3s to drop this word from training entirely */}
+            <HoldButton
+              onComplete={handleRemove}
+              idleLabel="Hold to remove 🗑"
+              activeLabel="Keep holding to remove…"
+              className="w-full min-h-[44px] rounded-xl bg-slate-800 dark:bg-slate-950 border border-slate-700 dark:border-slate-800 text-slate-400 hover:text-slate-200 text-sm font-medium"
+            />
           </div>
         ) : answered ? (
           <button
