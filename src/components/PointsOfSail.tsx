@@ -96,8 +96,11 @@ function sectorPath(
 
 export default function PointsOfSail({ compact = false, onSelect }: Props) {
   const size = compact ? 220 : 320
+  // Extra headroom above the circle so the WIND label + arrow are not clipped
+  // by the viewBox (they were previously drawn at negative y and invisible).
+  const topPad = compact ? 34 : 40
   const cx = size / 2
-  const cy = size / 2
+  const cy = topPad + size / 2
   const r = size * 0.42
 
   const labelR = r * 0.68
@@ -109,8 +112,8 @@ export default function PointsOfSail({ compact = false, onSelect }: Props) {
   return (
     <svg
       width={size}
-      height={size}
-      viewBox={`0 0 ${size} ${size}`}
+      height={size + topPad}
+      viewBox={`0 0 ${size} ${size + topPad}`}
       className="mx-auto"
       aria-label="Points of sail diagram"
     >
