@@ -26,6 +26,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
+          OWNER: ${{ github.repository_owner }}
           HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
           set -euo pipefail
@@ -37,7 +38,14 @@ jobs:
             exit 0
           fi
 
-          meta=$(gh pr view "$pr" --repo "$REPO" --json isDraft,labels)
+          meta=$(gh pr view "$pr" --repo "$REPO" --json isDraft,labels,author)
+          # Public-repo safety: only auto-merge PRs opened by the repo owner.
+          # Never auto-merge outside contributors' / forks' PRs.
+          author=$(echo "$meta" | jq -r .author.login)
+          if [ "$author" != "$OWNER" ]; then
+            echo "PR #$pr authored by '$author', not owner '$OWNER' — skipping."
+            exit 0
+          fi
           if [ "$(echo "$meta" | jq -r .isDraft)" = "true" ]; then
             echo "PR #$pr is a draft — skipping."
             exit 0
