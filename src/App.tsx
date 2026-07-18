@@ -93,7 +93,7 @@ export default function App() {
       {/* SW update banner */}
       {showUpdateBanner && (
         <div
-          className="fixed top-0 left-0 right-0 z-50 bg-sky-600 dark:bg-red-800 text-white text-center py-3 px-4 text-sm font-medium cursor-pointer shadow-lg max-w-2xl mx-auto"
+          className="fixed top-0 left-0 right-0 z-50 bg-sky-600 dark:bg-red-800 text-white text-center pb-3 pt-[calc(0.75rem_+_env(safe-area-inset-top))] px-4 text-sm font-medium cursor-pointer shadow-lg max-w-2xl mx-auto"
           onClick={() => window.location.reload()}
         >
           New version available — tap to reload
@@ -107,8 +107,8 @@ export default function App() {
         </div>
       )}
 
-      {/* Header */}
-      <header className="flex items-center justify-between px-4 py-3 bg-slate-900 dark:bg-black border-b border-slate-700 dark:border-slate-900 flex-shrink-0">
+      {/* Header — pad past the notch / Dynamic Island / status bar on modern iPhones */}
+      <header className="flex items-center justify-between pb-3 pt-[calc(0.75rem_+_env(safe-area-inset-top))] pl-[calc(1rem_+_env(safe-area-inset-left))] pr-[calc(1rem_+_env(safe-area-inset-right))] bg-slate-900 dark:bg-black border-b border-slate-700 dark:border-slate-900 flex-shrink-0">
         <div className="flex items-center gap-2">
           <h1 className="text-lg font-bold text-white dark:text-red-300">⚓ Sail Vocab</h1>
           {/* Offline indicator */}
@@ -147,7 +147,7 @@ export default function App() {
       </main>
 
       {/* Bottom nav */}
-      <nav className="bg-slate-800 dark:bg-slate-950 border-t border-slate-700 dark:border-slate-800 flex pb-[env(safe-area-inset-bottom)] flex-shrink-0">
+      <nav className="bg-slate-800 dark:bg-slate-950 border-t border-slate-700 dark:border-slate-800 flex pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] flex-shrink-0">
         {NAV_TABS.map(({ hash, icon, label }) => (
           <a
             key={hash}
