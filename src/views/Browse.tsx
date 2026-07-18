@@ -3,6 +3,7 @@ import type { Category, LeitnerState, Term } from '../types/index'
 import { CATEGORIES } from '../types/index'
 import { CATEGORY_META } from '../categories'
 import PointsOfSail from '../components/PointsOfSail'
+import SpeakButton from '../components/SpeakButton'
 
 interface Props {
   terms: Term[]
@@ -40,30 +41,54 @@ function TermCard({ term, leitnerState }: { term: Term; leitnerState: LeitnerSta
     <div
       className="bg-slate-800 dark:bg-slate-950 rounded-lg border border-slate-700 dark:border-slate-800 overflow-hidden"
     >
-      <button
-        className="w-full text-left px-4 py-3 flex items-center gap-3 min-h-[56px]"
-        onClick={() => setExpanded(e => !e)}
-      >
-        {leitnerDot(term.id, leitnerState)}
-        <div className="flex-1 min-w-0">
-          <span className="font-bold text-white dark:text-red-300 text-base">{term.term}</span>
-          {term.aka && term.aka.length > 0 && (
-            <span className="text-slate-400 dark:text-slate-500 text-xs ml-2">
-              aka {term.aka.join(', ')}
-            </span>
-          )}
-          <div className="text-slate-400 dark:text-red-400 text-sm truncate">{term.ru}</div>
-        </div>
-        <span className="text-slate-500 text-sm">{expanded ? '▲' : '▼'}</span>
-      </button>
+      <div className="w-full flex items-center gap-1 pl-4 pr-2 py-3 min-h-[56px]">
+        <button
+          className="flex items-center gap-3 flex-1 min-w-0 text-left"
+          onClick={() => setExpanded(e => !e)}
+        >
+          {leitnerDot(term.id, leitnerState)}
+          <div className="flex-1 min-w-0">
+            <span className="font-bold text-white dark:text-red-300 text-base">{term.term}</span>
+            {term.aka && term.aka.length > 0 && (
+              <span className="text-slate-400 dark:text-slate-500 text-xs ml-2">
+                aka {term.aka.join(', ')}
+              </span>
+            )}
+            <div className="text-slate-400 dark:text-red-400 text-sm truncate">{term.ru}</div>
+          </div>
+        </button>
+        <SpeakButton
+          kind="terms"
+          id={term.id}
+          fallbackText={term.term}
+          className="text-slate-400 hover:text-white active:scale-90 transition-transform text-xl p-2 min-h-[44px] min-w-[44px] flex items-center justify-center flex-shrink-0"
+        />
+        <button
+          className="text-slate-500 text-sm flex-shrink-0 p-2 min-h-[44px]"
+          onClick={() => setExpanded(e => !e)}
+          aria-label={expanded ? 'Collapse' : 'Expand'}
+        >
+          {expanded ? '▲' : '▼'}
+        </button>
+      </div>
 
       {expanded && (
         <div className="px-4 pb-4 border-t border-slate-700 dark:border-slate-800 pt-3 space-y-2">
           <p className="text-slate-200 dark:text-red-200 text-sm leading-relaxed">{term.definition}</p>
           {term.example && (
-            <p className="text-sky-200 dark:text-red-200 text-sm italic leading-relaxed border-l-2 border-sky-500/50 dark:border-red-500/50 pl-3">
-              "{term.example}"
-            </p>
+            <div className="flex items-start gap-2">
+              <SpeakButton
+                kind="examples"
+                id={term.id}
+                fallbackText={term.example}
+                glyph="▶"
+                label="Hear the example"
+                className="text-sky-400 hover:text-sky-200 active:scale-90 transition-transform mt-0.5 flex-shrink-0"
+              />
+              <p className="text-sky-200 dark:text-red-200 text-sm italic leading-relaxed border-l-2 border-sky-500/50 dark:border-red-500/50 pl-3">
+                "{term.example}"
+              </p>
+            </div>
           )}
           {term.aka && term.aka.length > 0 && (
             <p className="text-slate-400 dark:text-slate-500 text-xs">Also known as: {term.aka.join(', ')}</p>

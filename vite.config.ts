@@ -11,7 +11,10 @@ export default defineConfig({
         skipWaiting: true,
         clientsClaim: true,
         navigateFallback: '/index.html',
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,json,woff2}'],
+        // mp3 = the pre-rendered pronunciation clips + ambience. They MUST be
+        // precached, otherwise 🔊 is silent exactly where it's needed — offline
+        // on the water.
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,json,woff2,mp3}'],
         // The whole point of this app is to work offline on a boat. Raise the
         // precache cap so no bundled chunk (the inlined vocab data lives in the
         // JS) is ever silently dropped from the offline cache.

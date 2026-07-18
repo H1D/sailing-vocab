@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import type { LeitnerState, Term } from '../types/index'
 import { useLeitner } from '../hooks/useLeitner'
-import { useTTS } from '../hooks/useTTS'
+import { playClip, speakFallback } from '../audio'
+import SpeakButton from '../components/SpeakButton'
 import { categoryLabel } from '../categories'
 import PointsOfSail from '../components/PointsOfSail'
 import HoldButton from '../components/HoldButton'
@@ -28,7 +29,6 @@ function roleBadge(role: string) {
 
 export default function Train({ terms, leitnerState: _externalState, onUpdate }: Props) {
   const leitner = useLeitner(terms)
-  const { speak, hasEnglishVoice } = useTTS()
 
   // Sync external leitner state if needed - we use the hook's internal state
   // but propagate updates upward via onUpdate
@@ -63,11 +63,15 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
   const currentTerm = session[cardIndex]
   const progress = sessionTotal > 0 ? cardIndex / sessionTotal : 0
 
-  // Autoplay the English term/example on reveal — best-effort only. Silent if no
-  // voice loaded; never blocks the reveal itself (that's plain state above).
+  // Autoplay the gruff-skipper pronunciation of the term on reveal. Plays the
+  // pre-rendered offline clip (falls back to browser TTS only if it's missing);
+  // never blocks the reveal itself (that's plain state above). Autoplay may be
+  // blocked by the browser until the first tap — the 🔊 button always works.
   useEffect(() => {
-    if (flipped && hasEnglishVoice && currentTerm) {
-      speak(currentTerm.example || currentTerm.term)
+    if (flipped && currentTerm) {
+      playClip('terms', currentTerm.id, {
+        fallback: () => speakFallback(currentTerm.term),
+      })
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [flipped, cardIndex])
@@ -276,16 +280,14 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
         >
-          {/* TTS button — best-effort; only shows when an English voice loaded. */}
-          {hasEnglishVoice && (
-            <button
-              className="absolute top-2 right-2 text-2xl text-slate-400 hover:text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
-              onClick={e => { e.stopPropagation(); speak(currentTerm.term) }}
-              aria-label="Speak term"
-            >
-              🔊
-            </button>
-          )}
+          {/* Pronunciation — real pre-rendered clip, always available (offline too). */}
+          <SpeakButton
+            kind="terms"
+            id={currentTerm.id}
+            fallbackText={currentTerm.term}
+            label="Hear the pronunciation"
+            className="absolute top-2 right-2 text-2xl text-slate-400 hover:text-white active:scale-90 transition-transform p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+          />
 
           {/* m-auto centers short content, lets tall content scroll from the top */}
           <div className="m-auto w-full flex flex-col items-center p-6 gap-4">
@@ -322,11 +324,21 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
 
               <p className="text-slate-300 dark:text-red-200 text-sm leading-relaxed">{currentTerm.definition}</p>
 
-              {/* Real on-deck usage line */}
+              {/* Real on-deck usage line — with a ▶ to hear it spoken on deck */}
               {currentTerm.example && (
-                <p className="text-sky-200 dark:text-red-200 text-sm italic leading-relaxed border-l-2 border-sky-500/50 dark:border-red-500/50 pl-3 mx-auto max-w-xs text-left">
-                  "{currentTerm.example}"
-                </p>
+                <div className="flex items-start gap-2 mx-auto max-w-xs">
+                  <SpeakButton
+                    kind="examples"
+                    id={currentTerm.id}
+                    fallbackText={currentTerm.example}
+                    glyph="▶"
+                    label="Hear the example"
+                    className="text-sky-400 hover:text-sky-200 active:scale-90 transition-transform mt-0.5 flex-shrink-0"
+                  />
+                  <p className="text-sky-200 dark:text-red-200 text-sm italic leading-relaxed border-l-2 border-sky-500/50 dark:border-red-500/50 pl-3 text-left">
+                    "{currentTerm.example}"
+                  </p>
+                </div>
               )}
 
               {currentTerm.role && roleBadge(currentTerm.role)}

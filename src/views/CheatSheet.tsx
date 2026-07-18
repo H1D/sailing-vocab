@@ -1,5 +1,6 @@
 import type { Category, ManoeuvreSequence, Term } from '../types/index'
 import { categoryLabel } from '../categories'
+import SpeakButton from '../components/SpeakButton'
 
 interface Props {
   terms: Term[]
@@ -162,6 +163,14 @@ function SequenceCard({ sequence }: { sequence: ManoeuvreSequence }) {
                 >
                   {stepLabel(step.by)}
                 </span>
+                <SpeakButton
+                  kind="drills"
+                  id={`${sequence.id}-${i}`}
+                  fallbackText={step.call}
+                  glyph="▶"
+                  label={`Hear "${step.call}"`}
+                  className="no-print text-sky-400 hover:text-sky-200 active:scale-90 transition-transform text-sm"
+                />
               </div>
               {step.ru && (
                 <div className="text-slate-400 dark:text-slate-500 text-sm">{step.ru}</div>

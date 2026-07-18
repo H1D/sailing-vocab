@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { LeitnerState, Term, VocabData } from './types/index'
 import { useNightMode } from './hooks/useNightMode'
+import { useAmbience } from './hooks/useAmbience'
 import Browse from './views/Browse'
 import Train from './views/Train'
 import Drill from './views/Drill'
@@ -39,6 +40,9 @@ export default function App() {
 
   // Night mode
   const { nightMode, toggle: toggleNightMode } = useNightMode()
+
+  // Sea ambience — low looping bed you can toggle while drilling
+  const { playing: ambiencePlaying, toggle: toggleAmbience } = useAmbience()
 
   // Online/offline
   const [online, setOnline] = useState(navigator.onLine)
@@ -117,13 +121,28 @@ export default function App() {
             title={online ? 'Online' : 'Offline'}
           />
         </div>
-        <button
-          onClick={toggleNightMode}
-          className="text-xl p-2 rounded-lg hover:bg-slate-700 dark:hover:bg-slate-900 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
-          aria-label={nightMode ? 'Switch to day mode' : 'Switch to night mode'}
-        >
-          {nightMode ? '☀️' : '🌙'}
-        </button>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={toggleAmbience}
+            className={`text-xl p-2 rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center ${
+              ambiencePlaying
+                ? 'bg-slate-700 dark:bg-slate-900 opacity-100'
+                : 'opacity-50 hover:opacity-100 hover:bg-slate-700 dark:hover:bg-slate-900'
+            }`}
+            aria-label={ambiencePlaying ? 'Stop sea ambience' : 'Play sea ambience'}
+            aria-pressed={ambiencePlaying}
+            title="Sea ambience"
+          >
+            🌊
+          </button>
+          <button
+            onClick={toggleNightMode}
+            className="text-xl p-2 rounded-lg hover:bg-slate-700 dark:hover:bg-slate-900 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+            aria-label={nightMode ? 'Switch to day mode' : 'Switch to night mode'}
+          >
+            {nightMode ? '☀️' : '🌙'}
+          </button>
+        </div>
       </header>
 
       {/* Main content */}
