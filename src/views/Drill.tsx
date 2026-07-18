@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { Term } from '../types/index'
-import { useTTS } from '../hooks/useTTS'
+import { playClip, speakFallback } from '../audio'
 
 interface Props {
   terms: Term[]
@@ -51,8 +51,6 @@ function buildCard(term: Term, pool: Term[]): QuizCard {
 }
 
 export default function Drill({ terms }: Props) {
-  const { speak, hasEnglishVoice } = useTTS()
-
   const commandTerms = terms.filter(
     t => t.category === 'commands' && t.trainable !== false
   )
@@ -80,13 +78,17 @@ export default function Drill({ terms }: Props) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [terms])
 
-  // Auto-play TTS when card changes — best-effort, only if a voice loaded.
+  // Auto-play the gruff-skipper pronunciation when the card changes. Plays the
+  // pre-rendered offline clip (falls back to browser TTS only if it's missing).
+  // Autoplay may be blocked until the first tap — the 🔊 Replay button always works.
   useEffect(() => {
-    if (current && hasEnglishVoice && !hasSpoken.current) {
+    if (current && !hasSpoken.current) {
       hasSpoken.current = true
-      speak(current.term.term)
+      playClip('terms', current.term.id, {
+        fallback: () => speakFallback(current.term.term),
+      })
     }
-  }, [current, hasEnglishVoice, speak])
+  }, [current])
 
   function handleSelect(optionTermId: string) {
     if (selected) return // already answered
@@ -148,14 +150,16 @@ export default function Drill({ terms }: Props) {
           "{current.term.term}"
         </div>
 
-        {hasEnglishVoice && (
-          <button
-            className="flex items-center gap-2 bg-slate-700 dark:bg-slate-800 hover:bg-slate-600 dark:hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-xl text-sm transition-colors min-h-[44px]"
-            onClick={() => speak(current.term.term)}
-          >
-            🔊 Replay
-          </button>
-        )}
+        <button
+          className="flex items-center gap-2 bg-slate-700 dark:bg-slate-800 hover:bg-slate-600 dark:hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-xl text-sm transition-colors min-h-[44px]"
+          onClick={() =>
+            playClip('terms', current.term.id, {
+              fallback: () => speakFallback(current.term.term),
+            })
+          }
+        >
+          🔊 Replay
+        </button>
 
         <p className="text-slate-400 dark:text-slate-500 text-sm text-center">
           What does this command mean?
