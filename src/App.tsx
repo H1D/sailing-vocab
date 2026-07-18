@@ -89,7 +89,7 @@ export default function App() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-slate-900 dark:bg-black text-white dark:text-red-300 flex flex-col max-w-2xl mx-auto relative">
+    <div className="h-[100dvh] overscroll-none bg-slate-900 dark:bg-black text-white dark:text-red-300 flex flex-col max-w-2xl mx-auto relative">
       {/* SW update banner */}
       {showUpdateBanner && (
         <div
@@ -147,18 +147,19 @@ export default function App() {
       </main>
 
       {/* Bottom nav */}
-      <nav className="bg-slate-800 dark:bg-slate-950 border-t border-slate-700 dark:border-slate-800 flex pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] flex-shrink-0">
+      <nav aria-label="Primary" className="bg-slate-800 dark:bg-slate-950 border-t border-slate-700 dark:border-slate-800 flex pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] flex-shrink-0">
         {NAV_TABS.map(({ hash, icon, label }) => (
           <a
             key={hash}
             href={hash}
+            aria-current={view === hash ? 'page' : undefined}
             className={`flex-1 flex flex-col items-center justify-center py-2 min-h-[56px] text-xs font-medium transition-colors gap-0.5 ${
               view === hash
                 ? 'text-sky-400 dark:text-red-400 bg-slate-700 dark:bg-slate-900'
                 : 'text-slate-400 hover:text-white dark:hover:text-red-300'
             }`}
           >
-            <span className="text-lg leading-none">{icon}</span>
+            <span className="text-lg leading-none" aria-hidden="true">{icon}</span>
             <span>{label}</span>
           </a>
         ))}
