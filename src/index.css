@@ -2,8 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* The app is a fixed-viewport shell: only the view containers scroll.
+   Locking the page prevents iOS rubber-banding / double-scroll behind the nav.
+   Scoped to screen so printing the cheat sheet is unaffected. */
+@media screen {
+  html, body, #root {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+}
+
 @media print {
   nav, .no-print { display: none !important; }
+  /* Undo the app-shell height locks and inner scroll areas so the
+     full cheat sheet flows across pages instead of clipping to one. */
+  html, body, #root, #root > div, main, main > div {
+    height: auto !important;
+    overflow: visible !important;
+  }
   .cheat-sheet-content { column-count: 2; font-size: 11pt; }
   body { color: black; background: white; }
 }

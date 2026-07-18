@@ -126,7 +126,7 @@ export default function Drill({ terms }: Props) {
   if (!current) return null
 
   return (
-    <div className="flex flex-col h-full p-4 gap-4">
+    <div className="flex flex-col h-full min-h-0 overflow-y-auto p-4 gap-4">
       {/* Score */}
       <div className="flex items-center justify-between">
         <div className="text-slate-300 dark:text-red-300 text-sm font-semibold">

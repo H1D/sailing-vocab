@@ -164,7 +164,8 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
   // All caught up
   if (session.length === 0 || (cardIndex >= session.length)) {
     return (
-      <div className="flex flex-col items-center justify-center h-full p-8 text-center gap-6">
+      <div className="flex flex-col h-full min-h-0 overflow-y-auto">
+        <div className="m-auto flex flex-col items-center p-8 text-center gap-6 w-full">
         <div className="text-6xl">🎉</div>
         <h2 className="text-2xl font-bold text-white dark:text-red-300">All caught up!</h2>
         {nextReview && (
@@ -213,6 +214,7 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
             Start New Session
           </button>
         )}
+        </div>
       </div>
     )
   }
@@ -266,10 +268,10 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
       </div>
 
       {/* Card */}
-      <div className="flex-1 px-4 pb-4 flex flex-col gap-4">
+      <div className="flex-1 min-h-0 px-4 pb-4 flex flex-col gap-4">
         <div
           ref={cardRef}
-          className="flex-1 rounded-2xl bg-slate-800 dark:bg-slate-950 border border-slate-600 dark:border-slate-800 flex flex-col items-center justify-center p-6 gap-4 cursor-pointer active:opacity-90 transition-opacity relative"
+          className="flex-1 min-h-0 overflow-y-auto rounded-2xl bg-slate-800 dark:bg-slate-950 border border-slate-600 dark:border-slate-800 flex flex-col cursor-pointer active:opacity-90 transition-opacity relative"
           onClick={() => !answered && setFlipped(f => !f)}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
@@ -285,6 +287,8 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
             </button>
           )}
 
+          {/* m-auto centers short content, lets tall content scroll from the top */}
+          <div className="m-auto w-full flex flex-col items-center p-6 gap-4">
           {/* Category badge */}
           <span className="bg-slate-700 dark:bg-slate-800 text-slate-300 dark:text-slate-400 text-xs px-3 py-1 rounded-full">
             {categoryLabel(currentTerm.category)}
@@ -348,6 +352,7 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
               )}
             </div>
           )}
+          </div>
         </div>
 
         {/* Action buttons */}
