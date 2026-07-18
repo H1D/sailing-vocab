@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import type { LeitnerState, Term } from '../types/index'
 
 const LS_KEY = 'leitner-state'
+const SUSPEND_KEY = 'leitner-suspended'
 
 const BOX_INTERVALS: Record<1 | 2 | 3, number> = { 1: 1, 2: 3, 3: 7 }
 
@@ -33,15 +34,55 @@ function saveState(state: LeitnerState): void {
   }
 }
 
+function loadSuspended(): Set<string> {
+  try {
+    const raw = localStorage.getItem(SUSPEND_KEY)
+    if (raw) return new Set(JSON.parse(raw) as string[])
+  } catch {
+    // ignore
+  }
+  return new Set()
+}
+
+function saveSuspended(ids: Set<string>): void {
+  try {
+    localStorage.setItem(SUSPEND_KEY, JSON.stringify([...ids]))
+  } catch {
+    // ignore
+  }
+}
+
 export function useLeitner(terms: Term[]) {
   const [state, setState] = useState<LeitnerState>(loadState)
+  const [suspended, setSuspended] = useState<Set<string>>(loadSuspended)
 
+  // Cards eligible for training: flagged trainable AND not user-suspended
+  // ("don't teach me this"). Suspended ids persist in their own LS key.
   const trainableTerms = terms.filter(t => t.trainable !== false)
+  const activeTerms = trainableTerms.filter(t => !suspended.has(t.id))
 
   const updateState = useCallback((updater: (prev: LeitnerState) => LeitnerState) => {
     setState(prev => {
       const next = updater(prev)
       saveState(next)
+      return next
+    })
+  }, [])
+
+  // Remove a card from rotation for good (until restored). Persisted immediately.
+  const suspend = useCallback((termId: string) => {
+    setSuspended(prev => {
+      const next = new Set(prev)
+      next.add(termId)
+      saveSuspended(next)
+      return next
+    })
+  }, [])
+
+  const restoreSuspended = useCallback(() => {
+    setSuspended(() => {
+      const next = new Set<string>()
+      saveSuspended(next)
       return next
     })
   }, [])
@@ -52,7 +93,7 @@ export function useLeitner(terms: Term[]) {
     const due: Term[] = []
     const notStarted: Term[] = []
 
-    for (const term of trainableTerms) {
+    for (const term of activeTerms) {
       const entry = state[term.id]
       if (!entry) {
         notStarted.push(term)
@@ -69,13 +110,13 @@ export function useLeitner(terms: Term[]) {
     })
 
     return [...due, ...notStarted]
-  }, [state, trainableTerms])
+  }, [state, activeTerms])
 
   const getNextReviewDate = useCallback((): string | null => {
     const today = todayISO()
     let earliest: string | null = null
 
-    for (const term of trainableTerms) {
+    for (const term of activeTerms) {
       const entry = state[term.id]
       if (!entry) continue
       if (entry.nextReview > today) {
@@ -85,7 +126,7 @@ export function useLeitner(terms: Term[]) {
       }
     }
     return earliest
-  }, [state, trainableTerms])
+  }, [state, activeTerms])
 
   const markGotIt = useCallback((termId: string) => {
     updateState(prev => {
@@ -132,7 +173,7 @@ export function useLeitner(terms: Term[]) {
     let learning = 0
     let notStarted = 0
 
-    for (const term of trainableTerms) {
+    for (const term of activeTerms) {
       const entry = state[term.id]
       if (!entry) {
         notStarted++
@@ -143,8 +184,23 @@ export function useLeitner(terms: Term[]) {
       }
     }
 
-    return { total: trainableTerms.length, known, learning, notStarted }
-  }, [state, trainableTerms])
+    return {
+      total: activeTerms.length,
+      known,
+      learning,
+      notStarted,
+      suspended: suspended.size,
+    }
+  }, [state, activeTerms, suspended])
 
-  return { state, getDueCards, markGotIt, markStillLearning, getStats, getNextReviewDate }
+  return {
+    state,
+    getDueCards,
+    markGotIt,
+    markStillLearning,
+    getStats,
+    getNextReviewDate,
+    suspend,
+    restoreSuspended,
+  }
 }
