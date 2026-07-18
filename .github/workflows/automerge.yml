@@ -13,6 +13,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write # to dispatch deploy.yml after merging
 
 jobs:
   automerge:
@@ -58,3 +59,9 @@ jobs:
 
           echo "CI green for #$pr — squash-merging."
           gh pr merge "$pr" --repo "$REPO" --squash --delete-branch
+
+          # The merge push is made with GITHUB_TOKEN, so it won't trigger
+          # deploy.yml's `push` event. Explicitly dispatch the deploy against
+          # the freshly-merged main (workflow_dispatch is exempt from the guard).
+          echo "Dispatching deploy for merged main."
+          gh workflow run deploy.yml --repo "$REPO" --ref main

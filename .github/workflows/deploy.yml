@@ -3,6 +3,11 @@ name: Deploy to Cloudflare Pages
 on:
   push:
     branches: [main]
+  # Auto-merge squash-merges PRs with GITHUB_TOKEN, and pushes made by
+  # GITHUB_TOKEN do NOT trigger the push event above (GitHub's recursion
+  # guard). workflow_dispatch is an explicit exception to that guard, so
+  # automerge.yml calls `gh workflow run deploy.yml` after merging.
+  workflow_dispatch:
 
 jobs:
   deploy:
