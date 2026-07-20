@@ -11,6 +11,11 @@
     overflow: hidden;
     overscroll-behavior: none;
   }
+  /* Paint the page dark so the iOS home-indicator safe area (and any dvh gap
+     in standalone PWA mode) never shows the default white strip at the bottom.
+     Matches the app shell: slate-900 in day mode, black in night mode. */
+  html { background-color: #0f172a; }
+  html.dark { background-color: #000; }
 }
 
 @media print {

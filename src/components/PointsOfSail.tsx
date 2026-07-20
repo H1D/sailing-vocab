@@ -1,6 +1,10 @@
+import { TERM_TO_SECTOR } from './pointsOfSail'
+
 interface Props {
   compact?: boolean
   onSelect?: (termId: string) => void
+  /** Vocab term id to highlight. When set, only its sector is lit; the rest dim. */
+  activeId?: string
 }
 
 // Each sector: label, termId, startAngle, endAngle (degrees, 0=top/bow, clockwise)
@@ -94,7 +98,18 @@ function sectorPath(
   ].join(' ')
 }
 
-export default function PointsOfSail({ compact = false, onSelect }: Props) {
+export default function PointsOfSail({ compact = false, onSelect, activeId }: Props) {
+  const activeSector = activeId ? TERM_TO_SECTOR[activeId] : undefined
+  // Legend mode (no activeId): every sector visible. Highlight mode: light the
+  // active wedge, fade the rest so the current point of sail actually reads.
+  function fillOp(sectorId: string) {
+    if (!activeSector) return 0.3
+    return sectorId === activeSector ? 0.9 : 0.06
+  }
+  function strokeOp(sectorId: string) {
+    if (!activeSector) return 0.6
+    return sectorId === activeSector ? 1 : 0.12
+  }
   const size = compact ? 220 : 320
   // Extra headroom above the circle so the WIND label + arrow are not clipped
   // by the viewBox (they were previously drawn at negative y and invisible).
@@ -129,10 +144,10 @@ export default function PointsOfSail({ compact = false, onSelect }: Props) {
             key={sector.id}
             d={sectorPath(cx, cy, r, startDeg, endDeg)}
             fill={sector.color}
-            fillOpacity={0.35}
+            fillOpacity={fillOp(sector.id)}
             stroke={sector.color}
-            strokeWidth={1}
-            strokeOpacity={0.6}
+            strokeWidth={sector.id === activeSector ? 2 : 1}
+            strokeOpacity={strokeOp(sector.id)}
             style={{ cursor: onSelect ? 'pointer' : 'default' }}
             onClick={() => onSelect?.(sector.termId)}
           />
@@ -153,10 +168,10 @@ export default function PointsOfSail({ compact = false, onSelect }: Props) {
             <path
               d={sectorPath(cx, cy, r, sbStart, sbEnd)}
               fill={sector.color}
-              fillOpacity={0.3}
+              fillOpacity={fillOp(sector.id)}
               stroke={sector.color}
-              strokeWidth={1}
-              strokeOpacity={0.6}
+              strokeWidth={sector.id === activeSector ? 2 : 1}
+              strokeOpacity={strokeOp(sector.id)}
               style={{ cursor: onSelect ? 'pointer' : 'default' }}
               onClick={() => onSelect?.(sector.termId)}
             />
@@ -164,10 +179,10 @@ export default function PointsOfSail({ compact = false, onSelect }: Props) {
             <path
               d={sectorPath(cx, cy, r, portStart, portEnd)}
               fill={sector.color}
-              fillOpacity={0.3}
+              fillOpacity={fillOp(sector.id)}
               stroke={sector.color}
-              strokeWidth={1}
-              strokeOpacity={0.6}
+              strokeWidth={sector.id === activeSector ? 2 : 1}
+              strokeOpacity={strokeOp(sector.id)}
               style={{ cursor: onSelect ? 'pointer' : 'default' }}
               onClick={() => onSelect?.(sector.termId)}
             />
