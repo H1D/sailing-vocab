@@ -6,34 +6,27 @@
    Locking the page prevents iOS rubber-banding / double-scroll behind the nav.
    Scoped to screen so printing the cheat sheet is unaffected. */
 @media screen {
-  html, body, #root {
+  html, body {
     height: 100%;
+    margin: 0;
     overflow: hidden;
     overscroll-behavior: none;
   }
-  /* Paint the page dark so the iOS home-indicator safe area (and any dvh gap
-     in standalone PWA mode) never shows the default white strip at the bottom.
-     Matches the app shell: slate-900 in day mode, black in night mode. */
-  html { background-color: #0f172a; }
-  html.dark { background-color: #000; }
-
-  /* Bulletproof the iPhone home-indicator zone: paint it the footer/nav colour
-     so it can never render as a contrasting strip if the standalone-PWA shell
-     height is off by a hair on iOS. Fixed to the very bottom, sized to the
-     safe-area inset, z-index:-1 so it sits *behind* the opaque app shell — it
-     only shows through in the safe-area gap. */
-  body::after {
-    content: '';
+  /* THE iOS standalone-PWA fix: pin the app to the *physical* screen edges.
+     height:100% / 100dvh both resolve to the "safe" viewport in standalone
+     mode, which STOPS at the home-indicator line — leaving a gap below the nav
+     (fine in Safari, which has no such zone; broken when installed). With
+     viewport-fit=cover, position:fixed + inset:0 pins to the true screen
+     bottom, so the nav's padding-bottom fills the home-indicator zone. */
+  #root {
     position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: env(safe-area-inset-bottom);
-    background-color: #1e293b; /* slate-800 = nav bg (day) */
-    z-index: -1;
-    pointer-events: none;
+    inset: 0;
+    overflow: hidden;
   }
-  html.dark body::after { background-color: #020617; } /* slate-950 = nav bg (night) */
+  /* Fallback paint so the home-indicator zone can never flash a white strip
+     during load, before the fixed shell paints. Matches the nav colour. */
+  html { background-color: #1e293b; }        /* slate-800 = nav bg (day) */
+  html.dark { background-color: #020617; }   /* slate-950 = nav bg (night) */
 }
 
 @media print {
