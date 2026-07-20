@@ -16,6 +16,24 @@
      Matches the app shell: slate-900 in day mode, black in night mode. */
   html { background-color: #0f172a; }
   html.dark { background-color: #000; }
+
+  /* Bulletproof the iPhone home-indicator zone: paint it the footer/nav colour
+     so it can never render as a contrasting strip if the standalone-PWA shell
+     height is off by a hair on iOS. Fixed to the very bottom, sized to the
+     safe-area inset, z-index:-1 so it sits *behind* the opaque app shell — it
+     only shows through in the safe-area gap. */
+  body::after {
+    content: '';
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: env(safe-area-inset-bottom);
+    background-color: #1e293b; /* slate-800 = nav bg (day) */
+    z-index: -1;
+    pointer-events: none;
+  }
+  html.dark body::after { background-color: #020617; } /* slate-950 = nav bg (night) */
 }
 
 @media print {
