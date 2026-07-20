@@ -368,37 +368,37 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
         </div>
 
         {/* Action buttons */}
-        {flipped && !answered ? (
+        {flipped ? (
+          /* After an answer we auto-advance (700ms) — no "Next" tap. The answer
+             buttons just dim during the brief ✓/✗ feedback flash; the hold-to-remove
+             affordance hides once answered. */
           <div className="flex flex-col gap-2">
             <div className="flex gap-3">
               <button
-                className="flex-1 min-h-[56px] rounded-xl bg-red-900/60 hover:bg-red-800/80 border border-red-700 text-red-200 font-semibold text-base active:scale-95 transition-transform"
+                disabled={!!answered}
+                className="flex-1 min-h-[56px] rounded-xl bg-red-900/60 hover:bg-red-800/80 border border-red-700 text-red-200 font-semibold text-base active:scale-95 transition-transform disabled:opacity-40 disabled:active:scale-100"
                 onClick={handleStillLearning}
               >
                 Still learning ✗
               </button>
               <button
-                className="flex-1 min-h-[56px] rounded-xl bg-green-900/60 hover:bg-green-800/80 border border-green-700 text-green-200 font-semibold text-base active:scale-95 transition-transform"
+                disabled={!!answered}
+                className="flex-1 min-h-[56px] rounded-xl bg-green-900/60 hover:bg-green-800/80 border border-green-700 text-green-200 font-semibold text-base active:scale-95 transition-transform disabled:opacity-40 disabled:active:scale-100"
                 onClick={handleGotIt}
               >
                 Got it! ✓
               </button>
             </div>
             {/* Hold 3s to drop this word from training entirely */}
-            <HoldButton
-              onComplete={handleRemove}
-              idleLabel="Hold to remove 🗑"
-              activeLabel="Keep holding to remove…"
-              className="w-full min-h-[44px] rounded-xl bg-slate-800 dark:bg-slate-950 border border-slate-700 dark:border-slate-800 text-slate-400 hover:text-slate-200 text-sm font-medium"
-            />
+            {!answered && (
+              <HoldButton
+                onComplete={handleRemove}
+                idleLabel="Hold to remove 🗑"
+                activeLabel="Keep holding to remove…"
+                className="w-full min-h-[44px] rounded-xl bg-slate-800 dark:bg-slate-950 border border-slate-700 dark:border-slate-800 text-slate-400 hover:text-slate-200 text-sm font-medium"
+              />
+            )}
           </div>
-        ) : answered ? (
-          <button
-            className="w-full min-h-[56px] rounded-xl bg-sky-700 hover:bg-sky-600 dark:bg-red-900 dark:hover:bg-red-800 text-white font-semibold text-base active:scale-95 transition-transform"
-            onClick={advance}
-          >
-            Next →
-          </button>
         ) : (
           <button
             className="w-full min-h-[56px] rounded-xl bg-slate-700 hover:bg-slate-600 dark:bg-slate-900 text-white font-semibold text-base active:scale-95 transition-transform"
