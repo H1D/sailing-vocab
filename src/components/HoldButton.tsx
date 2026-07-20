@@ -10,13 +10,13 @@ interface Props {
 
 /**
  * Press-and-hold confirmation button. The action fires only after the pointer
- * is held down for `durationMs` (default 3s) — a fill bar shows the progress —
+ * is held down for `durationMs` (default 1.5s) — a fill bar shows the progress —
  * so it can't be triggered by an accidental tap. Releasing early cancels it.
  * Used for the destructive "remove this card from training" action.
  */
 export default function HoldButton({
   onComplete,
-  durationMs = 3000,
+  durationMs = 1500,
   idleLabel,
   activeLabel,
   className = '',
