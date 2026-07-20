@@ -393,8 +393,8 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
             {!answered && (
               <HoldButton
                 onComplete={handleRemove}
-                idleLabel="Hold to remove 🗑"
-                activeLabel="Keep holding to remove…"
+                idleLabel="Remove 🗑"
+                activeLabel="Removing…"
                 className="w-full min-h-[44px] rounded-xl bg-slate-800 dark:bg-slate-950 border border-slate-700 dark:border-slate-800 text-slate-400 hover:text-slate-200 text-sm font-medium"
               />
             )}
