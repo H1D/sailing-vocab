@@ -93,7 +93,7 @@ export default function App() {
   }, [])
 
   return (
-    <div className="h-[100dvh] overscroll-none bg-slate-900 dark:bg-black text-white dark:text-red-300 flex flex-col max-w-2xl mx-auto relative">
+    <div className="h-full overscroll-none bg-slate-900 dark:bg-black text-white dark:text-red-300 flex flex-col max-w-2xl mx-auto relative">
       {/* SW update banner */}
       {showUpdateBanner && (
         <div
