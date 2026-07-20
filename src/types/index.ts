@@ -57,6 +57,16 @@ export interface VocabData {
   sequences?: ManoeuvreSequence[]
 }
 
+// A single trainable card. Every trainable term becomes two cards — forward
+// (ENG→RU) and reverse (RU→ENG) — thrown into one pile with independent SRS
+// progress. Forward keeps the bare term id; reverse gets a "::rev" suffix.
+export type CardDirection = 'fwd' | 'rev'
+export interface Card {
+  cardId: string        // 'hull' (forward) | 'hull::rev' (reverse)
+  dir: CardDirection
+  term: Term            // underlying term (audio clips are keyed by term.id)
+}
+
 // Leitner SRS types
 export interface LeitnerState {
   [termId: string]: {
