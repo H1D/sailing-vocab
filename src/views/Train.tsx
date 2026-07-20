@@ -5,6 +5,7 @@ import { playClip, speakFallback } from '../audio'
 import SpeakButton from '../components/SpeakButton'
 import { categoryLabel } from '../categories'
 import PointsOfSail from '../components/PointsOfSail'
+import { hasSailDiagram } from '../components/pointsOfSail'
 import HoldButton from '../components/HoldButton'
 
 interface Props {
@@ -342,9 +343,9 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
               )}
 
               {currentTerm.role && roleBadge(currentTerm.role)}
-              {currentTerm.category === 'points-of-sail' && (
+              {hasSailDiagram(currentTerm.id) && (
                 <div className="mt-2">
-                  <PointsOfSail compact />
+                  <PointsOfSail compact activeId={currentTerm.id} />
                 </div>
               )}
 
