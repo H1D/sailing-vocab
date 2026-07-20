@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import type { LeitnerState, Term } from '../types/index'
+import type { Card, LeitnerState, Term } from '../types/index'
 import { useLeitner } from '../hooks/useLeitner'
 import { playClip, speakFallback } from '../audio'
 import SpeakButton from '../components/SpeakButton'
@@ -33,7 +33,7 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
 
   // Sync external leitner state if needed - we use the hook's internal state
   // but propagate updates upward via onUpdate
-  const [session, setSession] = useState<Term[]>([])
+  const [session, setSession] = useState<Card[]>([])
   const [sessionTotal, setSessionTotal] = useState(0)
   const [cardIndex, setCardIndex] = useState(0)
   const [flipped, setFlipped] = useState(false)
@@ -61,17 +61,18 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leitner.state])
 
-  const currentTerm = session[cardIndex]
+  const currentCard = session[cardIndex]
   const progress = sessionTotal > 0 ? cardIndex / sessionTotal : 0
 
-  // Autoplay the gruff-skipper pronunciation of the term on reveal. Plays the
-  // pre-rendered offline clip (falls back to browser TTS only if it's missing);
-  // never blocks the reveal itself (that's plain state above). Autoplay may be
-  // blocked by the browser until the first tap — the 🔊 button always works.
+  // Autoplay the gruff-skipper pronunciation of the *English* term on reveal —
+  // for both directions (hearing the English word you're producing is the whole
+  // point). Plays the pre-rendered offline clip (falls back to browser TTS only
+  // if it's missing) and never blocks the reveal itself. Autoplay may be blocked
+  // by the browser until the first tap — the 🔊 button always works.
   useEffect(() => {
-    if (flipped && currentTerm) {
-      playClip('terms', currentTerm.id, {
-        fallback: () => speakFallback(currentTerm.term),
+    if (flipped && currentCard) {
+      playClip('terms', currentCard.term.id, {
+        fallback: () => speakFallback(currentCard.term.term),
       })
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -107,22 +108,23 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
   }, [answered])
 
   function handleGotIt() {
-    if (!currentTerm || answered) return
+    if (!currentCard || answered) return
     setAnswered('got-it')
-    leitner.markGotIt(currentTerm.id)
+    leitner.markGotIt(currentCard.cardId)
   }
 
   function handleStillLearning() {
-    if (!currentTerm || answered) return
+    if (!currentCard || answered) return
     setAnswered('still-learning')
-    leitner.markStillLearning(currentTerm.id)
+    leitner.markStillLearning(currentCard.cardId)
   }
 
-  // Drop this card from training for good (held 3s). Not an "answer" — just
-  // remove it and move on, so it never comes back in the rotation.
+  // Drop this card from training for good (held 1.5s). Not an "answer" — just
+  // remove it and move on, so it never comes back in the rotation. Removes only
+  // this direction's card, not its partner.
   function handleRemove() {
-    if (!currentTerm) return
-    leitner.suspend(currentTerm.id)
+    if (!currentCard) return
+    leitner.suspend(currentCard.cardId)
     advance()
   }
 
@@ -224,7 +226,10 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
     )
   }
 
-  if (!currentTerm) return null
+  if (!currentCard) return null
+
+  const term = currentCard.term
+  const isReverse = currentCard.dir === 'rev'
 
   const doneInSession = cardIndex
   const totalInSession = sessionTotal
@@ -262,7 +267,7 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
       <div className="px-4 pt-3 pb-2">
         <div className="flex items-center justify-between text-xs text-slate-400 dark:text-slate-500 mb-1">
           <span>{doneInSession} of {totalInSession}</span>
-          <span className="text-slate-500">📦 Box {leitner.state[currentTerm.id]?.box ?? '—'}</span>
+          <span className="text-slate-500">📦 Box {leitner.state[currentCard.cardId]?.box ?? '—'}</span>
         </div>
         <div className="w-full h-1.5 bg-slate-700 dark:bg-slate-800 rounded-full overflow-hidden">
           <div
@@ -284,68 +289,91 @@ export default function Train({ terms, leitnerState: _externalState, onUpdate }:
           {/* Pronunciation — real pre-rendered clip, always available (offline too). */}
           <SpeakButton
             kind="terms"
-            id={currentTerm.id}
-            fallbackText={currentTerm.term}
+            id={term.id}
+            fallbackText={term.term}
             label="Hear the pronunciation"
             className="absolute top-2 right-2 text-2xl text-slate-400 hover:text-white active:scale-90 transition-transform p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
           />
 
           {/* m-auto centers short content, lets tall content scroll from the top */}
           <div className="m-auto w-full flex flex-col items-center p-6 gap-4">
-          {/* Category badge */}
-          <span className="bg-slate-700 dark:bg-slate-800 text-slate-300 dark:text-slate-400 text-xs px-3 py-1 rounded-full">
-            {categoryLabel(currentTerm.category)}
-          </span>
+          {/* Direction + category badges */}
+          <div className="flex items-center gap-2">
+            <span
+              className={`text-xs font-bold px-2 py-1 rounded-full ${
+                isReverse
+                  ? 'bg-amber-900/60 text-amber-300'
+                  : 'bg-sky-900/60 text-sky-300 dark:bg-red-900/40 dark:text-red-300'
+              }`}
+              title={isReverse ? 'Say it in English' : 'Recall the meaning'}
+            >
+              {isReverse ? '🇷🇺 → 🇬🇧' : '🇬🇧 → 🇷🇺'}
+            </span>
+            <span className="bg-slate-700 dark:bg-slate-800 text-slate-300 dark:text-slate-400 text-xs px-3 py-1 rounded-full">
+              {categoryLabel(term.category)}
+            </span>
+          </div>
 
           {!flipped ? (
-            /* Front */
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white dark:text-red-300 leading-tight mb-2">
-                {currentTerm.term}
-              </div>
-              {currentTerm.aka && currentTerm.aka.length > 0 && (
-                <div className="text-slate-400 dark:text-slate-500 text-sm">
-                  aka {currentTerm.aka.join(', ')}
+            /* Front — prompt side depends on direction */
+            isReverse ? (
+              <div className="text-center">
+                <div className="text-3xl font-bold text-sky-300 dark:text-red-400 leading-tight mb-2">
+                  {term.ru}
                 </div>
-              )}
-              <div className="text-slate-500 dark:text-slate-600 text-sm mt-6">Tap to reveal →</div>
-            </div>
+                <div className="text-slate-500 dark:text-slate-600 text-sm mt-6">
+                  Say it in English — tap to reveal →
+                </div>
+              </div>
+            ) : (
+              <div className="text-center">
+                <div className="text-3xl font-bold text-white dark:text-red-300 leading-tight mb-2">
+                  {term.term}
+                </div>
+                {term.aka && term.aka.length > 0 && (
+                  <div className="text-slate-400 dark:text-slate-500 text-sm">
+                    aka {term.aka.join(', ')}
+                  </div>
+                )}
+                <div className="text-slate-500 dark:text-slate-600 text-sm mt-6">Tap to reveal →</div>
+              </div>
+            )
           ) : (
-            /* Back */
+            /* Back — same full reveal for both directions (English word + meaning) */
             <div className="text-center space-y-3 w-full">
               {/* Original word — always shown on reveal so you see the word AND its meaning together */}
               <div className="text-3xl font-bold text-white dark:text-red-300 leading-tight">
-                {currentTerm.category === 'commands' ? `"${currentTerm.term}"` : currentTerm.term}
+                {term.category === 'commands' ? `"${term.term}"` : term.term}
               </div>
 
               {/* Russian translation — the answer; kept large and legible, not a tiny caption */}
               <div className="text-2xl font-semibold text-sky-300 dark:text-red-400 leading-snug">
-                {currentTerm.ru}
+                {term.ru}
               </div>
 
-              <p className="text-slate-300 dark:text-red-200 text-sm leading-relaxed">{currentTerm.definition}</p>
+              <p className="text-slate-300 dark:text-red-200 text-sm leading-relaxed">{term.definition}</p>
 
               {/* Real on-deck usage line — with a ▶ to hear it spoken on deck */}
-              {currentTerm.example && (
+              {term.example && (
                 <div className="flex items-start gap-2 mx-auto max-w-xs">
                   <SpeakButton
                     kind="examples"
-                    id={currentTerm.id}
-                    fallbackText={currentTerm.example}
+                    id={term.id}
+                    fallbackText={term.example}
                     glyph="▶"
                     label="Hear the example"
                     className="text-sky-400 hover:text-sky-200 active:scale-90 transition-transform mt-0.5 flex-shrink-0"
                   />
                   <p className="text-sky-200 dark:text-red-200 text-sm italic leading-relaxed border-l-2 border-sky-500/50 dark:border-red-500/50 pl-3 text-left">
-                    "{currentTerm.example}"
+                    "{term.example}"
                   </p>
                 </div>
               )}
 
-              {currentTerm.role && roleBadge(currentTerm.role)}
-              {hasSailDiagram(currentTerm.id) && (
+              {term.role && roleBadge(term.role)}
+              {hasSailDiagram(term.id) && (
                 <div className="mt-2">
-                  <PointsOfSail compact activeId={currentTerm.id} />
+                  <PointsOfSail compact activeId={term.id} />
                 </div>
               )}
 

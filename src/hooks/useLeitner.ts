@@ -1,10 +1,15 @@
 import { useCallback, useState } from 'react'
-import type { LeitnerState, Term } from '../types/index'
+import type { Card, LeitnerState, Term } from '../types/index'
 
 const LS_KEY = 'leitner-state'
 const SUSPEND_KEY = 'leitner-suspended'
 
 const BOX_INTERVALS: Record<1 | 2 | 3, number> = { 1: 1, 2: 3, 3: 7 }
+
+// Reverse cards (RU→ENG) get their own id so they track SRS progress separately
+// from the forward (ENG→RU) card. Forward keeps the bare term id, so any
+// progress saved before reverse cards existed is preserved untouched.
+const REV_SUFFIX = '::rev'
 
 function todayISO(): string {
   return new Date().toISOString().slice(0, 10)
@@ -52,14 +57,34 @@ function saveSuspended(ids: Set<string>): void {
   }
 }
 
+// Expand every trainable term into two independent cards — forward (ENG→RU) and
+// reverse (RU→ENG) — in one shuffled-but-stable pile. The reverse pass is
+// offset by half the deck so a term's two sides never land next to each other
+// (you shouldn't be shown the answer to the card you just saw).
+function buildCards(terms: Term[]): Card[] {
+  const trainable = terms.filter(t => t.trainable !== false)
+  const forward: Card[] = trainable.map(t => ({ cardId: t.id, dir: 'fwd', term: t }))
+  const reverse: Card[] = trainable.map(t => ({ cardId: t.id + REV_SUFFIX, dir: 'rev', term: t }))
+
+  const n = forward.length
+  if (n === 0) return []
+  const offset = Math.floor(n / 2)
+  const out: Card[] = []
+  for (let i = 0; i < n; i++) {
+    out.push(forward[i])
+    out.push(reverse[(i + offset) % n])
+  }
+  return out
+}
+
 export function useLeitner(terms: Term[]) {
   const [state, setState] = useState<LeitnerState>(loadState)
   const [suspended, setSuspended] = useState<Set<string>>(loadSuspended)
 
-  // Cards eligible for training: flagged trainable AND not user-suspended
-  // ("don't teach me this"). Suspended ids persist in their own LS key.
-  const trainableTerms = terms.filter(t => t.trainable !== false)
-  const activeTerms = trainableTerms.filter(t => !suspended.has(t.id))
+  // The full pile of cards (both directions), minus any the user has removed
+  // ("don't teach me this"). Suspension is per-card, keyed by cardId.
+  const allCards = buildCards(terms)
+  const activeCards = allCards.filter(c => !suspended.has(c.cardId))
 
   const updateState = useCallback((updater: (prev: LeitnerState) => LeitnerState) => {
     setState(prev => {
@@ -70,10 +95,10 @@ export function useLeitner(terms: Term[]) {
   }, [])
 
   // Remove a card from rotation for good (until restored). Persisted immediately.
-  const suspend = useCallback((termId: string) => {
+  const suspend = useCallback((cardId: string) => {
     setSuspended(prev => {
       const next = new Set(prev)
-      next.add(termId)
+      next.add(cardId)
       saveSuspended(next)
       return next
     })
@@ -87,37 +112,37 @@ export function useLeitner(terms: Term[]) {
     })
   }, [])
 
-  const getDueCards = useCallback((): Term[] => {
+  const getDueCards = useCallback((): Card[] => {
     const today = todayISO()
 
-    const due: Term[] = []
-    const notStarted: Term[] = []
+    const due: Card[] = []
+    const notStarted: Card[] = []
 
-    for (const term of activeTerms) {
-      const entry = state[term.id]
+    for (const card of activeCards) {
+      const entry = state[card.cardId]
       if (!entry) {
-        notStarted.push(term)
+        notStarted.push(card)
       } else if (entry.nextReview <= today) {
-        due.push(term)
+        due.push(card)
       }
     }
 
     // Sort due by box ascending (box 1 first = most urgent)
     due.sort((a, b) => {
-      const aBox = state[a.id]?.box ?? 1
-      const bBox = state[b.id]?.box ?? 1
+      const aBox = state[a.cardId]?.box ?? 1
+      const bBox = state[b.cardId]?.box ?? 1
       return aBox - bBox
     })
 
     return [...due, ...notStarted]
-  }, [state, activeTerms])
+  }, [state, activeCards])
 
   const getNextReviewDate = useCallback((): string | null => {
     const today = todayISO()
     let earliest: string | null = null
 
-    for (const term of activeTerms) {
-      const entry = state[term.id]
+    for (const card of activeCards) {
+      const entry = state[card.cardId]
       if (!entry) continue
       if (entry.nextReview > today) {
         if (!earliest || entry.nextReview < earliest) {
@@ -126,11 +151,11 @@ export function useLeitner(terms: Term[]) {
       }
     }
     return earliest
-  }, [state, activeTerms])
+  }, [state, activeCards])
 
-  const markGotIt = useCallback((termId: string) => {
+  const markGotIt = useCallback((cardId: string) => {
     updateState(prev => {
-      const entry = prev[termId]
+      const entry = prev[cardId]
       const currentBox: 1 | 2 | 3 = entry?.box ?? 1
       const currentStreak = entry?.streak ?? 0
       const newStreak = currentStreak + 1
@@ -145,7 +170,7 @@ export function useLeitner(terms: Term[]) {
 
       return {
         ...prev,
-        [termId]: {
+        [cardId]: {
           box: newBox,
           nextReview,
           streak: newBox !== currentBox ? 0 : newStreak,
@@ -154,12 +179,12 @@ export function useLeitner(terms: Term[]) {
     })
   }, [updateState])
 
-  const markStillLearning = useCallback((termId: string) => {
+  const markStillLearning = useCallback((cardId: string) => {
     updateState(prev => {
       const nextReview = addDays(todayISO(), BOX_INTERVALS[1])
       return {
         ...prev,
-        [termId]: {
+        [cardId]: {
           box: 1,
           nextReview,
           streak: 0,
@@ -173,8 +198,8 @@ export function useLeitner(terms: Term[]) {
     let learning = 0
     let notStarted = 0
 
-    for (const term of activeTerms) {
-      const entry = state[term.id]
+    for (const card of activeCards) {
+      const entry = state[card.cardId]
       if (!entry) {
         notStarted++
       } else if (entry.box === 3) {
@@ -185,13 +210,13 @@ export function useLeitner(terms: Term[]) {
     }
 
     return {
-      total: activeTerms.length,
+      total: activeCards.length,
       known,
       learning,
       notStarted,
       suspended: suspended.size,
     }
-  }, [state, activeTerms, suspended])
+  }, [state, activeCards, suspended])
 
   return {
     state,
